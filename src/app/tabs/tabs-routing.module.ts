@@ -8,16 +8,16 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
-        loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
+        path: 'tab-live-camera',
+        loadChildren: () => import('../tab-live-camera/tab-live-camera.module').then(m => m.TabLiveCameraPageModule)
       },
       {
-        path: 'tab2',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+        path: 'tab-co-mat',
+        loadChildren: () => import('../tab-co-mat/tab-co-mat.module').then(m => m.TabCoMatPageModule)
       },
       {
-        path: 'tab3',
-        loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
+        path: 'tab-vang-mat',
+        loadChildren: () => import('../tab-vang-mat/tab-vang-mat.module').then(m => m.TabVangMatPageModule)
       },
       {
         path: 'tab-bo-tiet',
@@ -29,14 +29,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/tabs/tab-live-camera',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/tab-live-camera',
     pathMatch: 'full'
   }
 ];

@@ -2,10 +2,10 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Tab1Page } from './tab1.page';
+import { TabLiveCameraPage } from './tab-live-camera.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
-import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { TabLiveCameraPageRoutingModule } from './tab-live-camera-routing.module';
 import {ComponentsModule} from '../components/components.module';
 
 @NgModule({
@@ -14,9 +14,9 @@ import {ComponentsModule} from '../components/components.module';
         CommonModule,
         FormsModule,
         ExploreContainerComponentModule,
-        Tab1PageRoutingModule,
+        TabLiveCameraPageRoutingModule,
         ComponentsModule,
     ],
-  declarations: [Tab1Page]
+  declarations: [TabLiveCameraPage]
 })
-export class Tab1PageModule {}
+export class TabLiveCameraPageModule {}
