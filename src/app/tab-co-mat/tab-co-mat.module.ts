@@ -7,6 +7,7 @@ import { TabCoMatPage } from './tab-co-mat.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
 import { TabCoMatPageRoutingModule } from './tab-co-mat-routing.module';
+import {ComponentsModule} from '../components/components.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { TabCoMatPageRoutingModule } from './tab-co-mat-routing.module';
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    TabCoMatPageRoutingModule
+    TabCoMatPageRoutingModule,
+    ComponentsModule
   ],
   declarations: [TabCoMatPage]
 })

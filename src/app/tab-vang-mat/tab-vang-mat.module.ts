@@ -7,6 +7,7 @@ import { TabVangMatPage } from './tab-vang-mat.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
 import { TabVangMatPageRoutingModule } from './tab-vang-mat-routing.module'
+import {ComponentsModule} from '../components/components.module';
 
 @NgModule({
   imports: [
@@ -14,8 +15,9 @@ import { TabVangMatPageRoutingModule } from './tab-vang-mat-routing.module'
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    RouterModule.forChild([{ path: '', component: TabVangMatPage }]),
+    RouterModule.forChild([{path: '', component: TabVangMatPage}]),
     TabVangMatPageRoutingModule,
+    ComponentsModule,
   ],
   declarations: [TabVangMatPage]
 })
