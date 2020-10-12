@@ -5,11 +5,21 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab Nguoi La</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-list>
+    <ion-list-header class="list-header" lines="full">
+      <ion-label color="primary" class="font-size-16 ion-text-wrap ion-text-center">Danh Sách người lạ tại lớp <span class="bold-text">B01</span> ngày <span
+              class="bold-text">9/10/2020</span></ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <img src="/assets/face/co-mat/nguyen-thi-quynh.jpeg">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>Trần Thị Minh Tâm</h2>
+        <h3>SDT: 099999999</h3>
+        <p>1 Đại Cồ Việt, Bách Khoa, Hai Bà Trưng, Hà Nội</p>
+      </ion-label>
+    </ion-item>
 
-  <app-explore-container name="Tab Nguoi La"></app-explore-container>
+  </ion-list>
 </ion-content>

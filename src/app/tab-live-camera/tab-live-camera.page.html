@@ -6,19 +6,13 @@
 
 <ion-content [fullscreen]="true">
     <ion-card>
-        <!--        <ion-card-header>-->
-        <!--            <ion-item>-->
-        <!--                <ion-card-subtitle class="ion-text-center">THÔNG TIN TRƯỜNG</ion-card-subtitle>-->
-        <!--            </ion-item>-->
-        <!--        </ion-card-header>-->
         <ion-card-content>
             <ion-item>
-                <ion-label class="ion-text-wrap ion-text-center">Học viện chính trị Quốc gia HCM Khu vực 1</ion-label>
+                <ion-label id="shool-name" class="ion-text-wrap ion-text-center">Học viện chính trị Quốc gia HCM Khu vực 1</ion-label>
                 <ion-thumbnail slot="end">
                     <img src="/assets/icon/hvct-logo.png">
                 </ion-thumbnail>
             </ion-item>
-
         </ion-card-content>
     </ion-card>
     <ion-card>
@@ -28,10 +22,10 @@
         <ion-card-content id="class-info-list">
             <ion-item>
                 <ul>
-                    <li>Lớp: B16</li>
-                    <li>Môn Học: Triết học Mác Lênin</li>
-                    <li>Giảng Viên: Nguyễn Chấn Hùng</li>
-                    <li>Ngày: Thứ 6, 9/10/2020 - 12:03</li>
+                    <li>Lớp: <span class="bold-text">B16</span></li>
+                    <li>Môn Học: <span class="bold-text">Triết học Mác Lênin</span></li>
+                    <li>Giảng Viên: <span class="bold-text">Nguyễn Chấn Hùng</span></li>
+                    <li>Thời Gian: <span class="bold-text">Thứ 6, 9/10/2020 - 12:03</span></li>
                 </ul>
             </ion-item>
         </ion-card-content>
@@ -44,37 +38,24 @@
     </ion-card>
 
     <ion-card>
-        <ion-item>
-            <ion-icon name="pin" slot="start"></ion-icon>
-            <ion-label>ion-item in a card, icon left, button right</ion-label>
-            <ion-button fill="outline" slot="end">View</ion-button>
+        <ion-item detail href="/tabs/tab-co-mat" class="ion-activated">
+            <ion-icon name="person-add-outline" slot="start"></ion-icon>
+            <ion-label>Có Mặt: <span class="bold-text">30/35 học viên</span></ion-label>
         </ion-item>
 
-        <ion-card-content>
-            This is content, without any paragraph or header tags,
-            within an ion-card-content element.
-        </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-        <ion-item href="#" class="ion-activated">
-            <ion-icon name="wifi" slot="start"></ion-icon>
-            <ion-label>Card Link Item 1 activated</ion-label>
+        <ion-item detail href="/tabs/tab-vang-mat">
+            <ion-icon name="person-remove-outline" slot="start"></ion-icon>
+            <ion-label>Vắng Mặt: <span class="bold-text">5/35 học viên</span></ion-label>
         </ion-item>
 
-        <ion-item href="#">
-            <ion-icon name="wine" slot="start"></ion-icon>
-            <ion-label>Card Link Item 2</ion-label>
+        <ion-item detail href="/tabs/tab-bo-tiet" class="ion-activated">
+            <ion-icon name="walk-outline" slot="start"></ion-icon>
+            <ion-label>Bỏ Tiết: <span class="bold-text">2/35 học viên</span></ion-label>
         </ion-item>
 
-        <ion-item class="ion-activated">
-            <ion-icon name="warning" slot="start"></ion-icon>
-            <ion-label>Card Button Item 1 activated</ion-label>
-        </ion-item>
-
-        <ion-item>
-            <ion-icon name="walk" slot="start"></ion-icon>
-            <ion-label>Card Button Item 2</ion-label>
+        <ion-item detail href="/tabs/tab-nguoi-la">
+            <ion-icon name="accessibility-outline" slot="start"></ion-icon>
+            <ion-label>Người lạ: <span class="bold-text">1 người</span></ion-label>
         </ion-item>
     </ion-card>
 </ion-content>
