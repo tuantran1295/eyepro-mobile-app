@@ -4,7 +4,7 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content style="background: aliceblue" [fullscreen]="true">
     <ion-card>
         <ion-card-content>
             <ion-item>
@@ -21,19 +21,45 @@
         </ion-card-header>
         <ion-card-content id="class-info-list">
             <ion-item>
-                <ul>
-                    <li>Lớp: <span class="bold-text">B16</span></li>
-                    <li>Môn Học: <span class="bold-text">Triết học Mác Lênin</span></li>
-                    <li>Giảng Viên: <span class="bold-text">Nguyễn Chấn Hùng</span></li>
-                    <li>Thời Gian: <span class="bold-text">Thứ 6, 9/10/2020 - 12:03</span></li>
-                </ul>
+                <ion-label>
+                    Lớp:
+                </ion-label>
+                <ion-label class="ion-text-end bold-text">
+                    B16
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    Môn Học:
+                </ion-label>
+                <ion-label class="ion-text-end bold-text">
+                    Triết Học Mác Lênin
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    Giảng Viên:
+                </ion-label>
+                <ion-label class="ion-text-end bold-text">
+                    Nguyễn Chấn Hùng
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    Thời Gian:
+                </ion-label>
+                <ion-label class="ion-text-end bold-text">
+                    12:03 - 9/10/2020
+                </ion-label>
             </ion-item>
         </ion-card-content>
     </ion-card>
     <ion-card>
         <ion-card-header>
             <ion-card-title class="card-header">HÌNH ẢNH TRỰC TIẾP</ion-card-title>
-            <img id="class-gif" src="assets/gif/class.gif">
+            <ion-item>
+                <img id="class-gif" src="assets/gif/class.gif">
+            </ion-item>
         </ion-card-header>
     </ion-card>
 
