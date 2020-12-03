@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
+import { ExploreContainerComponentModule } from '../../explore-container/explore-container.module';
 
-import { TabNguoiLaPage } from './tab-nguoi-la.page';
+import { TabCoMatPage } from './tab-co-mat.page';
 
-describe('TabNguoiLaPage', () => {
-  let component: TabNguoiLaPage;
-  let fixture: ComponentFixture<TabNguoiLaPage>;
+describe('TabCoMatPage', () => {
+  let component: TabCoMatPage;
+  let fixture: ComponentFixture<TabCoMatPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TabNguoiLaPage],
+      declarations: [TabCoMatPage],
       imports: [IonicModule.forRoot(), ExploreContainerComponentModule]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TabNguoiLaPage);
+    fixture = TestBed.createComponent(TabCoMatPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
