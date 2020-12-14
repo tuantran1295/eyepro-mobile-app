@@ -17,15 +17,15 @@
         <ion-list>
             <ion-item>
                 <ion-label position="stacked" color="primary">Tên Đăng Nhập</ion-label>
-                <ion-input name="username" formControlName="username" type="text" spellcheck="false"
+                <ion-input name="userName" formControlName="userName" type="text" spellcheck="false"
                            autocapitalize="off" required></ion-input>
             </ion-item>
 
-            <ion-text *ngIf="(username.dirty || username.touched) && username.errors" color="danger">
-                <p *ngIf="username.errors?.required" class="ion-padding-start">
+            <ion-text *ngIf="(userName.dirty || userName.touched) && userName.errors" color="danger">
+                <p *ngIf="userName.errors?.required" class="ion-padding-start">
                     Tên đăng nhập không được bỏ trống
                 </p>
-                <p *ngIf="username.errors?.minlength" class="ion-padding-start">
+                <p *ngIf="userName.errors?.minlength" class="ion-padding-start">
                     Tên đăng nhập không hợp lệ
                 </p>
             </ion-text>

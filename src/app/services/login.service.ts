@@ -32,15 +32,7 @@ export class LoginService {
     }
 
     login(credentials: { username, password }): Observable<any> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Request-Method': 'DELETE, POST, GET, OPTIONS',
-                'Access-Control-Request-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
-            })
-        };
-
-        return this.http.post(LOGIN_URL, credentials, httpOptions).pipe(
+        return this.http.post(LOGIN_URL, credentials).pipe(
             map((data: any) => data.data.token),
             switchMap(token => {
                 console.log('LOGIN TOKEN: ');

@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
 
     ngOnInit() {
         this.credentials = this.formBuilder.group({
-            username: ['view_301', [Validators.required, Validators.minLength(3)]],
+            userName: ['view_301', [Validators.required, Validators.minLength(3)]],
             password: ['abcd1234', [Validators.required, Validators.minLength(5)]]
         });
     }
@@ -42,7 +42,7 @@ export class LoginPage implements OnInit {
                 await loading.dismiss();
                 const alert = await this.alertController.create({
                     header: 'Lỗi Đăng Nhâp',
-                    message: res.error.error,
+                    message: res,
                     buttons: ['OK'],
                 });
                 await alert.present();
@@ -52,8 +52,8 @@ export class LoginPage implements OnInit {
 
     // Form input modal getter
     // Easy to access for form fields
-    get username() {
-        return this.credentials.get('username');
+    get userName() {
+        return this.credentials.get('userName');
     }
 
     get password() {
