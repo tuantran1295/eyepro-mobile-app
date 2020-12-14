@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Plugins} from '@capacitor/core';
 import {BehaviorSubject, from, Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map, switchMap, tap} from 'rxjs/operators';
 
 const {Storage} = Plugins;
@@ -17,6 +17,7 @@ export class LoginService {
     loginToken = '';
 
     constructor(private http: HttpClient) {
+        this.loadLoginToken();
     }
 
     async loadLoginToken() {
@@ -31,7 +32,15 @@ export class LoginService {
     }
 
     login(credentials: { username, password }): Observable<any> {
-        return this.http.post(LOGIN_URL, credentials).pipe(
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Request-Method': 'DELETE, POST, GET, OPTIONS',
+                'Access-Control-Request-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
+            })
+        };
+
+        return this.http.post(LOGIN_URL, credentials, httpOptions).pipe(
             map((data: any) => data.data.token),
             switchMap(token => {
                 console.log('LOGIN TOKEN: ');
