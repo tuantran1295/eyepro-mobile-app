@@ -1,0 +1,68 @@
+<ion-header>
+    <ion-toolbar color="tertiary">
+        <!--    <ion-buttons slot="start">-->
+        <!--      <ion-menu-button></ion-menu-button>-->
+        <!--    </ion-buttons>-->
+
+        <ion-title>Đăng Nhập</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="login-logo">
+        <img src="assets/icon/eyepro-logo.jpeg" alt="Eyepro logo">
+    </div>
+
+    <form (ngSubmit)="login()" [formGroup]="credentials">
+        <ion-list>
+            <ion-item>
+                <ion-label position="stacked" color="primary">Tên Đăng Nhập</ion-label>
+                <ion-input name="username" formControlName="username" type="text" spellcheck="false"
+                           autocapitalize="off" required></ion-input>
+            </ion-item>
+
+            <ion-text *ngIf="(username.dirty || username.touched) && username.errors" color="danger">
+                <p *ngIf="username.errors?.required" class="ion-padding-start">
+                    Tên đăng nhập không được bỏ trống
+                </p>
+                <p *ngIf="username.errors?.minlength" class="ion-padding-start">
+                    Tên đăng nhập không hợp lệ
+                </p>
+            </ion-text>
+
+            <ion-item>
+                <ion-label position="stacked" color="primary">Mật Khẩu</ion-label>
+                <ion-input formControlName="password" name="password" type="password" autocapitalize="off"
+                           required></ion-input>
+            </ion-item>
+
+            <ion-text *ngIf="(password.dirty || password.touched) && password.errors" color="danger">
+                <p *ngIf="password.errors?.required" class="ion-padding-start">
+                    Mật khẩu không được để trống
+                </p>
+                <p *ngIf="password.errors?.minlength" class="ion-padding-start">
+                    Mật khẩu không hợp lệ
+                </p>
+            </ion-text>
+        </ion-list>
+
+        <ion-row>
+            <ion-col>
+                <ion-button [disabled]="!credentials.valid" type="submit" expand="block">Đăng Nhập</ion-button>
+            </ion-col>
+            <ion-col>
+                <ion-button [disabled]="true" color="light" expand="block">Đăng Ký</ion-button>
+            </ion-col>
+        </ion-row>
+
+        <ion-button type="button" expand="block" color="tertiary">
+            <ion-icon name="logo-google" slot="start"></ion-icon>
+            Sign in with Google
+        </ion-button>
+        <ion-button type="button" expand="block" color="tertiary">
+            <ion-icon name="logo-apple" slot="start"></ion-icon>
+            Sign in with Apple
+        </ion-button>
+    </form>
+
+</ion-content>
