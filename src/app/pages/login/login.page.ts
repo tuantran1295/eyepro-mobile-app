@@ -4,6 +4,9 @@ import {LoginService} from '../../services/login.service';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {HttpHeaders} from '@angular/common/http';
+import {Plugins} from '@capacitor/core';
+const {Storage} = Plugins;
+
 
 @Component({
     selector: 'app-login',
@@ -35,6 +38,10 @@ export class LoginPage implements OnInit {
 
         this.loginService.login(this.credentials.value).subscribe(
             async (res) => {
+                console.log('LOGIN STORAGE RES: ');
+                console.log(res);
+                console.log('STORAGE TOKEN: ');
+                console.log(Storage.get({key: "login-token"}));
                 await loading.dismiss();
                 this.router.navigateByUrl('/tabs', {replaceUrl: true});
             },

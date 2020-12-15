@@ -31,10 +31,18 @@ export class LoginService {
         }
     }
 
+    //: Observable<any>
     login(credentials: { username, password }): Observable<any> {
+        //  this.http.post(LOGIN_URL, credentials).subscribe((data) => {
+        //     console.log("LOGIN DATA: ");
+        //     console.log(data);
+        //     console.log("TOKEN: ");
+        //     console.log(data.data.token)
+        // })
+
         return this.http.post(LOGIN_URL, credentials).pipe(
             map((data: any) => data.data.token),
-            switchMap(token => {
+            switchMap((token) => {
                 console.log('LOGIN TOKEN: ');
                 console.log(token);
                 return from(Storage.set({key: LOGIN_TOKEN_KEY, value: token}));
