@@ -5,6 +5,7 @@ import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {HttpHeaders} from '@angular/common/http';
 import {Plugins} from '@capacitor/core';
+
 const {Storage} = Plugins;
 
 
@@ -26,9 +27,18 @@ export class LoginPage implements OnInit {
     }
 
     ngOnInit() {
+        this.autoLogin();
         this.credentials = this.formBuilder.group({
             userName: ['view_301', [Validators.required, Validators.minLength(3)]],
             password: ['abcd1234', [Validators.required, Validators.minLength(5)]]
+        });
+    }
+
+    autoLogin() {
+        this.loginService.isAuthenticated.subscribe((isLoggedIn) => {
+            if (isLoggedIn) {
+                this.router.navigateByUrl('/tabs', {replaceUrl: true});
+            }
         });
     }
 
@@ -41,15 +51,15 @@ export class LoginPage implements OnInit {
                 console.log('LOGIN STORAGE RES: ');
                 console.log(res);
                 console.log('STORAGE TOKEN: ');
-                console.log(Storage.get({key: "login-token"}));
+                console.log(Storage.get({key: 'login-token'}));
                 await loading.dismiss();
                 this.router.navigateByUrl('/tabs', {replaceUrl: true});
             },
             async (res) => {
                 await loading.dismiss();
                 const alert = await this.alertController.create({
-                    header: 'Lỗi Đăng Nhâp',
-                    message: res,
+                    header: 'Lỗi Đăng Nhập',
+                    message: res.message.toString(),
                     buttons: ['OK'],
                 });
                 await alert.present();

@@ -23,10 +23,10 @@ const routes: Routes = [
         path: 'tab-bo-tiet',
         loadChildren: () => import('../tab-bo-tiet/tab-bo-tiet.module').then(m => m.TabBoTietPageModule)
       },
-      {
-        path: 'tab-nguoi-la',
-        loadChildren: () => import('../tab-nguoi-la/tab-nguoi-la.module').then(m => m.TabNguoiLaPageModule)
-      },
+      // {
+      //   path: 'tab-nguoi-la',
+      //   loadChildren: () => import('../tab-nguoi-la/tab-nguoi-la.module').then(m => m.TabNguoiLaPageModule)
+      // },
       {
         path: '',
         redirectTo: '/tabs/tab-live-camera',

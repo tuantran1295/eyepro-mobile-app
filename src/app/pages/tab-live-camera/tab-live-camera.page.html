@@ -8,7 +8,7 @@
     <ion-card>
         <ion-card-content>
             <ion-item>
-                <ion-label id="shool-name" class="ion-text-wrap ion-text-center">Học viện chính trị Quốc gia HCM Khu vực 1</ion-label>
+                <ion-label id="shool-name" class="ion-text-wrap ion-text-center">{{schoolName}}</ion-label>
                 <ion-thumbnail slot="end">
                     <img src="/assets/icon/hvct-logo.png">
                 </ion-thumbnail>
@@ -25,31 +25,31 @@
                     Lớp:
                 </ion-label>
                 <ion-label class="ion-text-end bold-text">
-                    B16
+                    {{className}}
                 </ion-label>
             </ion-item>
-            <ion-item>
-                <ion-label>
-                    Môn Học:
-                </ion-label>
-                <ion-label class="ion-text-end bold-text">
-                    Triết Học Mác Lênin
-                </ion-label>
-            </ion-item>
-            <ion-item>
-                <ion-label>
-                    Giảng Viên:
-                </ion-label>
-                <ion-label class="ion-text-end bold-text">
-                    Nguyễn Chấn Hùng
-                </ion-label>
-            </ion-item>
+            <!--            <ion-item>-->
+            <!--                <ion-label>-->
+            <!--                    Môn Học:-->
+            <!--                </ion-label>-->
+            <!--                <ion-label class="ion-text-end bold-text">-->
+            <!--                    Triết Học Mác Lênin-->
+            <!--                </ion-label>-->
+            <!--            </ion-item>-->
+            <!--            <ion-item>-->
+            <!--                <ion-label>-->
+            <!--                    Giảng Viên:-->
+            <!--                </ion-label>-->
+            <!--                <ion-label class="ion-text-end bold-text">-->
+            <!--                    Nguyễn Chấn Hùng-->
+            <!--                </ion-label>-->
+            <!--            </ion-item>-->
             <ion-item>
                 <ion-label>
                     Thời Gian:
                 </ion-label>
                 <ion-label class="ion-text-end bold-text">
-                    12:03 - 9/10/2020
+                    {{currentDate | date:'dd/MM/yyyy'}}
                 </ion-label>
             </ion-item>
         </ion-card-content>
@@ -66,22 +66,25 @@
     <ion-card>
         <ion-item detail href="/tabs/tab-co-mat" class="ion-activated">
             <ion-icon name="person-add-outline" slot="start"></ion-icon>
-            <ion-label>Có Mặt: <span class="bold-text">30/35 học viên</span></ion-label>
+            <ion-label>Có Mặt: <span class="bold-text">{{attendedNumber}}/{{totalStudent}} học viên</span>
+            </ion-label>
         </ion-item>
 
         <ion-item detail href="/tabs/tab-vang-mat">
             <ion-icon name="person-remove-outline" slot="start"></ion-icon>
-            <ion-label>Vắng Mặt: <span class="bold-text">5/35 học viên</span></ion-label>
+            <ion-label>Vắng Mặt: <span class="bold-text">{{absenceNumber}}/{{totalStudent}} học viên</span>
+            </ion-label>
         </ion-item>
 
         <ion-item detail href="/tabs/tab-bo-tiet" class="ion-activated">
             <ion-icon name="walk-outline" slot="start"></ion-icon>
-            <ion-label>Bỏ Tiết: <span class="bold-text">2/35 học viên</span></ion-label>
+            <ion-label>Bỏ Tiết: <span class="bold-text">{{leftNumber}}/{{totalStudent}} học viên</span>
+            </ion-label>
         </ion-item>
 
-        <ion-item detail href="/tabs/tab-nguoi-la">
-            <ion-icon name="accessibility-outline" slot="start"></ion-icon>
-            <ion-label>Người lạ: <span class="bold-text">1 người</span></ion-label>
-        </ion-item>
+        <!--        <ion-item detail href="/tabs/tab-nguoi-la">-->
+        <!--            <ion-icon name="accessibility-outline" slot="start"></ion-icon>-->
+        <!--            <ion-label>Người lạ: <span class="bold-text">1 người</span></ion-label>-->
+        <!--        </ion-item>-->
     </ion-card>
 </ion-content>
