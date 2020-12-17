@@ -1,47 +1,27 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <app-header></app-header>
-  </ion-toolbar>
+    <ion-toolbar>
+        <app-header></app-header>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-list-header class="list-header" lines="full">
-      <ion-label color="primary" class="font-size-16 ion-text-wrap ion-text-center">Danh Sách Học Viên Lớp <span class="bold-text">B01</span> bỏ tiết ngày <span
-              class="bold-text">9/10/2020</span></ion-label>
-    </ion-list-header>
-    <ion-item>
-      <ion-thumbnail slot="start">
-        <img src="/assets/face/co-mat/nguyen-thi-quynh.jpeg">
-      </ion-thumbnail>
-      <ion-label>
-        <h2>Trần Thị Minh Tâm</h2>
-        <h3>SDT: 099999999</h3>
-        <p>1 Đại Cồ Việt, Bách Khoa, Hai Bà Trưng, Hà Nội</p>
-      </ion-label>
-    </ion-item>
+    <ion-list>
+        <ion-list-header class="list-header" lines="full">
+            <ion-label color="primary" class="font-size-16 ion-text-wrap ion-text-center">Danh Sách Học Viên Lớp <span
+                    class="bold-text">{{className}}</span> bỏ tiết ngày <span
+                    class="bold-text">{{currentDate | date:'dd/MM/yyyy'}}</span></ion-label>
+        </ion-list-header>
 
-    <ion-item>
-      <ion-thumbnail slot="start">
-        <img src="/assets/face/co-mat/vu-phi-hung.jpeg">
-      </ion-thumbnail>
-      <ion-label>
-        <h2>Nguyễn Ngọc Tuấn</h2>
-        <h3>SDT: 099999999</h3>
-        <p>1 Đại Cồ Việt, Bách Khoa, Hai Bà Trưng, Hà Nội</p>
-      </ion-label>
-    </ion-item>
+        <ion-item *ngFor="let student of studentList">
+            <ion-thumbnail slot="start">
+                <img [src]="student.profileImage">
+            </ion-thumbnail>
+            <ion-label>
+                <h2>{{student.fullName}}</h2>
+                <h3>Lớp: {{student.roomName}}</h3>
+                <p>{{student.areaName}}</p>
+            </ion-label>
+        </ion-item>
 
-    <ion-item>
-      <ion-thumbnail slot="start">
-        <img src="/assets/face/co-mat/sung-van-chi.jpeg">
-      </ion-thumbnail>
-      <ion-label>
-        <h2>Ngô Hữu Quyền</h2>
-        <h3>SDT: 099999999</h3>
-        <p>1 Đại Cồ Việt, Bách Khoa, Hai Bà Trưng, Hà Nội</p>
-      </ion-label>
-    </ion-item>
-
-  </ion-list>
+    </ion-list>
 </ion-content>
