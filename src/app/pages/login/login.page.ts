@@ -30,9 +30,6 @@ export class LoginPage implements OnInit {
 
     ngOnInit() {
         this.autoLogin();
-        // this.classRoomService.getClassList().subscribe(data => {
-        //     console.log(data);
-        // });
         this.credentials = this.formBuilder.group({
             userName: ['view_301', [Validators.required, Validators.minLength(3)]],
             password: ['abcd1234', [Validators.required, Validators.minLength(5)]]
@@ -42,7 +39,7 @@ export class LoginPage implements OnInit {
     autoLogin() {
         this.loginService.isAuthenticated.subscribe((isLoggedIn) => {
             if (isLoggedIn) {
-                this.router.navigateByUrl('/tabs', {replaceUrl: true});
+               this.loadChosenClass();
             }
         });
     }
@@ -77,5 +74,18 @@ export class LoginPage implements OnInit {
     get password() {
         return this.credentials.get('password');
     }
+
+    loadChosenClass() {
+        this.classRoomService.chosenClassRoom.subscribe(chosenClass => {
+            console.log("CHOSEN CLASS: ");
+            console.log(chosenClass);
+            if (chosenClass) {
+                this.router.navigateByUrl('/tabs', {replaceUrl: true});
+            } else {
+                this.router.navigateByUrl('/danh-sach-lop', {replaceUrl: true});
+            }
+        });
+    }
+
 
 }

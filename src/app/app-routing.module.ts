@@ -14,7 +14,8 @@ const routes: Routes = [
     },
     {
         path: 'danh-sach-lop',
-        loadChildren: () => import('./pages/danh-sach-lop/danh-sach-lop.module').then(m => m.DanhSachLopPageModule)
+        loadChildren: () => import('./pages/danh-sach-lop/danh-sach-lop.module').then(m => m.DanhSachLopPageModule),
+        canLoad: [AuthGuard]
     },
     {
         path: 'tabs',

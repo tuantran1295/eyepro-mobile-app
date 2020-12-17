@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ClassRoom} from '../../models/ClassRoom';
 import {ClassRoomService} from '../../services/class-room.service';
 import {AlertController, LoadingController} from '@ionic/angular';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-danh-sach-lop',
@@ -12,6 +13,7 @@ export class DanhSachLopPage implements OnInit {
     classRoomList = [];
 
     constructor(
+        private router: Router,
         private classRoomService: ClassRoomService,
         private loadingController: LoadingController,
         private alertController: AlertController,
