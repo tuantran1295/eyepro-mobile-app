@@ -5,6 +5,7 @@ import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {HttpHeaders} from '@angular/common/http';
 import {Plugins} from '@capacitor/core';
+import {ClassRoomService} from '../../services/class-room.service';
 
 const {Storage} = Plugins;
 
@@ -23,11 +24,15 @@ export class LoginPage implements OnInit {
         private alertController: AlertController,
         private router: Router,
         private loadingController: LoadingController,
+        private classRoomService: ClassRoomService,
     ) {
     }
 
     ngOnInit() {
         this.autoLogin();
+        // this.classRoomService.getClassList().subscribe(data => {
+        //     console.log(data);
+        // });
         this.credentials = this.formBuilder.group({
             userName: ['view_301', [Validators.required, Validators.minLength(3)]],
             password: ['abcd1234', [Validators.required, Validators.minLength(5)]]
@@ -48,10 +53,6 @@ export class LoginPage implements OnInit {
 
         this.loginService.login(this.credentials.value).subscribe(
             async (res) => {
-                console.log('LOGIN STORAGE RES: ');
-                console.log(res);
-                console.log('STORAGE TOKEN: ');
-                console.log(Storage.get({key: 'login-token'}));
                 await loading.dismiss();
                 this.router.navigateByUrl('/tabs', {replaceUrl: true});
             },

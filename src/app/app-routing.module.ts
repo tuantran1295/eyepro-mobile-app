@@ -9,18 +9,18 @@ const routes: Routes = [
         pathMatch: 'full'
     },
     {
+        path: 'login',
+        loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+    },
+    {
+        path: 'danh-sach-lop',
+        loadChildren: () => import('./pages/danh-sach-lop/danh-sach-lop.module').then(m => m.DanhSachLopPageModule)
+    },
+    {
         path: 'tabs',
         loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
         canLoad: [AuthGuard]
     },
-    {
-        path: 'login',
-        loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
-    },
-  {
-    path: 'choose-class',
-    loadChildren: () => import('./pages/choose-class/choose-class.module').then( m => m.ChooseClassPageModule)
-  }
 ];
 
 @NgModule({

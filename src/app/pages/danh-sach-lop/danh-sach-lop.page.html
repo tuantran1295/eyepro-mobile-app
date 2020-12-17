@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <app-header>Eyepro</app-header>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-list-header class="list-header" lines="full">
+      <ion-label color="primary" class="font-size-16 ion-text-wrap ion-text-center">
+        <span>Bấm vào một lớp bất kỳ trong danh sách để xem thông tin điểm danh của lớp tương ứng</span>
+      </ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let classRoom of classRoomList">
+      <ion-thumbnail slot="start">
+        <img src="/assets/icon/hvct-logo.png">
+      </ion-thumbnail>
+      <ion-label>
+        <h2><span class="bold-text">Lớp:</span> {{classRoom.className}}</h2>
+        <h3><span class="bold-text">Mã số phòng học:</span> {{classRoom.roomID}}</h3>
+        <p>{{classRoom.areaName}}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
