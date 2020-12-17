@@ -18,10 +18,15 @@ const routes: Routes = [
         canLoad: [AuthGuard]
     },
     {
-        path: 'tabs',
+        path: 'thong-tin-lop/:className',
         loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
         canLoad: [AuthGuard]
     },
+    // {
+    //     path: 'tabs',
+    //     loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
+    //     canLoad: [AuthGuard]
+    // },
 ];
 
 @NgModule({

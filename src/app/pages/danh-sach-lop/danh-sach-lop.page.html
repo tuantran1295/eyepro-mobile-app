@@ -12,7 +12,7 @@
       </ion-label>
     </ion-list-header>
 
-    <ion-item *ngFor="let classRoom of classRoomList">
+    <ion-item *ngFor="let classRoom of classRoomList" (click)="onClassItemClicked(classRoom.className)">
       <ion-thumbnail slot="start">
         <img src="/assets/icon/hvct-logo.png">
       </ion-thumbnail>

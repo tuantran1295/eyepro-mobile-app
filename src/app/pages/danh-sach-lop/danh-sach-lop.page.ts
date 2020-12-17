@@ -30,7 +30,6 @@ export class DanhSachLopPage implements OnInit {
 
         this.classRoomService.getClassList().subscribe(
             async (classRoomData) => {
-                console.log(classRoomData);
                 classRoomData = classRoomData.map(classRoom => (
                     {
                         id: classRoom.id,
@@ -38,9 +37,7 @@ export class DanhSachLopPage implements OnInit {
                         roomID: classRoom.roomId,
                         areaName: classRoom.areaName
                     }));
-                console.log(classRoomData);
                 this.classRoomList = this.classRoomList.concat(classRoomData);
-                console.log(this.classRoomList);
                 this.classRoomList.sort(this.compareClassRoomName)
                 await loading.dismiss();
             },
@@ -53,6 +50,12 @@ export class DanhSachLopPage implements OnInit {
                 });
                 await alert.present();
             });
+    }
+
+    onClassItemClicked(className: string) {
+        this.classRoomService.chooseClass(className).subscribe(() => {
+
+        });
     }
 
     compareClassRoomName(a, b) {

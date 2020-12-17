@@ -39,7 +39,7 @@ export class LoginPage implements OnInit {
     autoLogin() {
         this.loginService.isAuthenticated.subscribe((isLoggedIn) => {
             if (isLoggedIn) {
-               this.loadChosenClass();
+                this.loadChosenClass();
             }
         });
     }
@@ -51,7 +51,7 @@ export class LoginPage implements OnInit {
         this.loginService.login(this.credentials.value).subscribe(
             async (res) => {
                 await loading.dismiss();
-                this.router.navigateByUrl('/tabs', {replaceUrl: true});
+                this.loadChosenClass();
             },
             async (res) => {
                 await loading.dismiss();
@@ -77,7 +77,7 @@ export class LoginPage implements OnInit {
 
     loadChosenClass() {
         this.classRoomService.chosenClassRoom.subscribe(chosenClass => {
-            console.log("CHOSEN CLASS: ");
+            console.log('CHOSEN CLASS: ');
             console.log(chosenClass);
             if (chosenClass) {
                 this.router.navigateByUrl('/tabs', {replaceUrl: true});
