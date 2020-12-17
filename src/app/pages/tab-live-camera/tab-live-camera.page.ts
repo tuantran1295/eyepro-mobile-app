@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AttendanceService} from '../../services/attendance.service';
+import {LoginService} from '../../services/login.service';
+import {Router} from '@angular/router';
+import {LoadingController} from '@ionic/angular';
 
 @Component({
     selector: 'app-tab-live-camera',
@@ -17,7 +20,12 @@ export class TabLiveCameraPage implements OnInit{
     currentDate = new Date();
 
 
-    constructor(private attendanceService: AttendanceService) {
+    constructor(
+        private attendanceService: AttendanceService,
+        private loginService: LoginService,
+        private router: Router,
+        private loadingController: LoadingController,
+    ) {
     }
 
     ngOnInit(): void {
@@ -45,10 +53,6 @@ export class TabLiveCameraPage implements OnInit{
         this.attendanceService.getTotalStudent().subscribe(studentNo => {
             this.totalStudent = Number(studentNo);
         });
-        // if (this.attendanceService.totalStudent) {
-        //     return this.attendanceService.totalStudent;
-        // }
-        // return '';
     }
 
     getAttendedNumber() {
@@ -58,7 +62,6 @@ export class TabLiveCameraPage implements OnInit{
             console.log(students.length);
             this.attendedNumber = students.length;
         })
-        // return this.attendanceService.getAttendedStudentList().length;
     }
 
     getAbsenceNumber() {
@@ -79,10 +82,15 @@ export class TabLiveCameraPage implements OnInit{
         })
     }
 
+    async logout() {
+        const loading = await this.loadingController.create();
+        await loading.present();
+        this.loginService.logout().then(() => {
+            loading.dismiss();
+            this.router.navigateByUrl('/login', {replaceUrl: true});
+        });
+    }
 
 
-    // getCurrentDateTime() {
-    //     return this.datePipe.transform(new Date(), 'short','UTC+7','vi' );
-    // }
 
 }
