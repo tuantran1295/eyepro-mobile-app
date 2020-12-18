@@ -30,14 +30,14 @@ export class ClassRoomService {
 
     chooseClass(className: string): Observable<any> {
         this.chosenClassRoom.next(className);
-        return from(Storage.set({key: LOGIN_TOKEN_KEY, value: className}));
+        return from(Storage.set({key: CHOSEN_CLASSROOM_KEY, value: className}));
     }
 
     async loadChosenClassRoom() {
         const chosenClass = await Storage.get({key: CHOSEN_CLASSROOM_KEY});
         if (chosenClass && chosenClass.value) {
-            console.log('Chosen class: ', chosenClass.value['name']);
-            this.chosenClassRoom.next(chosenClass.value['name']);
+            console.log('LOADED Chosen class: ', chosenClass.value);
+            this.chosenClassRoom.next(chosenClass.value);
         } else {
             this.chosenClassRoom.next('');
         }

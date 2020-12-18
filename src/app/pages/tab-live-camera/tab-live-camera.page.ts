@@ -3,13 +3,14 @@ import {AttendanceService} from '../../services/attendance.service';
 import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
 import {LoadingController} from '@ionic/angular';
+import {ClassRoomService} from '../../services/class-room.service';
 
 @Component({
     selector: 'app-tab-live-camera',
     templateUrl: 'tab-live-camera.page.html',
     styleUrls: ['tab-live-camera.page.scss']
 })
-export class TabLiveCameraPage implements OnInit{
+export class TabLiveCameraPage implements OnInit {
 
     schoolName = '';
     className = '';
@@ -21,6 +22,7 @@ export class TabLiveCameraPage implements OnInit{
 
 
     constructor(
+        private classRoomService: ClassRoomService,
         private attendanceService: AttendanceService,
         private loginService: LoginService,
         private router: Router,
@@ -29,57 +31,62 @@ export class TabLiveCameraPage implements OnInit{
     }
 
     ngOnInit(): void {
-        this.getSchoolName();
-        this.getCurrentClassName();
-        this.getTotalStudent();
-        this.getAttendedNumber();
-        this.getAbsenceNumber();
-        this.getLeftNumber();
+        this.classRoomService.chosenClassRoom.subscribe((className) => {
+            if (className) {
+                console.log('Chosen CLASS NAME: ');
+                console.log(className);
+                this.getSchoolName(className);
+                this.getCurrentClassName(className);
+                this.getTotalStudent(className);
+                this.getAttendedNumber(className);
+                this.getAbsenceNumber(className);
+                this.getLeftNumber(className);
+            }
+        });
+
     }
 
-    getSchoolName() {
-        this.attendanceService.getCurrentArea().subscribe(schoolName => {
+    getSchoolName(className) {
+        this.attendanceService.getCurrentArea(className).subscribe(schoolName => {
             this.schoolName += schoolName;
         });
     }
 
-    getCurrentClassName() {
-        if (this.attendanceService.currentClass) {
-            this.className = this.attendanceService.currentClass;
-        }
+    getCurrentClassName(name) {
+        this.className = name;
     }
 
-    getTotalStudent() {
-        this.attendanceService.getTotalStudent().subscribe(studentNo => {
+    getTotalStudent(className) {
+        this.attendanceService.getTotalStudent(className).subscribe(studentNo => {
             this.totalStudent = Number(studentNo);
         });
     }
 
-    getAttendedNumber() {
-        this.attendanceService.getAttendedStudentList().subscribe(students => {
-            console.log("ATTENDED LENGTH: ");
+    getAttendedNumber(className) {
+        this.attendanceService.getAttendedStudentList(className).subscribe(students => {
+            console.log('ATTENDED LENGTH: ');
             console.log(students);
             console.log(students.length);
             this.attendedNumber = students.length;
-        })
+        });
     }
 
-    getAbsenceNumber() {
-        this.attendanceService.getAbsenceStudentList().subscribe((students) => {
-            console.log("ABSENCE LENGTH: ");
+    getAbsenceNumber(className) {
+        this.attendanceService.getAbsenceStudentList(className).subscribe((students) => {
+            console.log('ABSENCE LENGTH: ');
             console.log(students);
             console.log(students.length);
             this.absenceNumber = students.length;
         });
     }
 
-    getLeftNumber() {
-        this.attendanceService.getLeftStudentList().subscribe((students) => {
-            console.log("LEFT LENGTH: ");
+    getLeftNumber(className) {
+        this.attendanceService.getLeftStudentList(className).subscribe((students) => {
+            console.log('LEFT LENGTH: ');
             console.log(students);
             console.log(students.length);
             this.leftNumber = students.length;
-        })
+        });
     }
 
     async logout() {
@@ -90,7 +97,6 @@ export class TabLiveCameraPage implements OnInit{
             this.router.navigateByUrl('/login', {replaceUrl: true});
         });
     }
-
 
 
 }

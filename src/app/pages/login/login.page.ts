@@ -76,15 +76,18 @@ export class LoginPage implements OnInit {
     }
 
     loadChosenClass() {
-        this.classRoomService.chosenClassRoom.subscribe(chosenClass => {
-            console.log('CHOSEN CLASS: ');
-            console.log(chosenClass);
-            if (chosenClass) {
-                this.router.navigateByUrl('/tabs', {replaceUrl: true});
-            } else {
-                this.router.navigateByUrl('/danh-sach-lop', {replaceUrl: true});
-            }
+        this.classRoomService.loadChosenClassRoom().then(() => { // classRoomService.chosenClassRoom behaviour subject next value in this function
+            this.classRoomService.chosenClassRoom.subscribe(chosenClass => {
+                if (chosenClass) {
+                    console.log("Login Page CHOSEN CLASS:");
+                    console.log(chosenClass);
+                    this.router.navigateByUrl('/thong-tin-lop/' + chosenClass, {replaceUrl: true});
+                } else {
+                    this.router.navigateByUrl('/danh-sach-lop', {replaceUrl: true});
+                }
+            });
         });
+
     }
 
 

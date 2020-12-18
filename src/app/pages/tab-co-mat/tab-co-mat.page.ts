@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AttendanceService} from '../../services/attendance.service';
+import {ClassRoomService} from '../../services/class-room.service';
 
 @Component({
     selector: 'app-tab-co-mat',
@@ -11,22 +12,27 @@ export class TabCoMatPage implements OnInit {
     className = '';
     currentDate = new Date();
 
-    constructor(private attendanceService: AttendanceService) {
+    constructor(
+        private attendanceService: AttendanceService,
+        private classRoomService: ClassRoomService
+    ) {
     }
 
     ngOnInit(): void {
-        this.getCurrentClassName();
-        this.getAttendedStudent();
+        this.classRoomService.chosenClassRoom.subscribe((className) => {
+            if (className) {
+                this.getCurrentClassName(className);
+                this.getAttendedStudent(className);
+            }
+        });
     }
 
-    getCurrentClassName() {
-        if (this.attendanceService.currentClass) {
-            this.className = this.attendanceService.currentClass;
-        }
+    getCurrentClassName(name) {
+        this.className = name;
     }
 
-    getAttendedStudent() {
-        this.attendanceService.getAttendedStudentList().subscribe(students => {
+    getAttendedStudent(className) {
+        this.attendanceService.getAttendedStudentList(className).subscribe(students => {
             this.studentList = students;
         });
     }
