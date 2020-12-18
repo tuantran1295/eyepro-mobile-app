@@ -6,7 +6,7 @@ import {ClassRoomService} from './class-room.service';
 
 const ATTENDANCE_API_URL = 'http://27.71.228.53:9002/SmartClass/student/timekeeping-room/roomId/';
 
-// const ATTENDANCE_API_URL = 'http://27.71.228.53:9003/SmartClass/student/timekeeping-room/roomId/';
+// const ATTENDANCE_API_URL = '/assets/json/b4-sample-response.json';
 
 @Injectable({
     providedIn: 'root'
@@ -37,6 +37,8 @@ export class AttendanceService implements OnInit {
         const url = ATTENDANCE_API_URL + className;
         return this.http.get(url).pipe(
             switchMap(data => {
+                console.log("getTotalStudent DATA: ");
+                console.log(data)
                 if (data['data']) {
                     return of(data['total']);
                 } else {
@@ -65,10 +67,12 @@ export class AttendanceService implements OnInit {
         const url = ATTENDANCE_API_URL + className;
         return this.http.get(url).pipe(
             switchMap(data => {
+                console.log("getAttendedStudentList DATA: ");
+                console.log(data)
                 if (data['data']) {
                     return of(data['data'].filter(student => student['monitorState'] === 1));
                 } else {
-                    return of(['Danh Sách Trống']);
+                    return of(null);
                 }
             }),
             catchError(this.handleError('getAttendedStudentList'))
@@ -82,7 +86,7 @@ export class AttendanceService implements OnInit {
                 if (data['data']) {
                     return of(data['data'].filter(student => student['monitorState'] === 2));
                 } else {
-                    return of(['Danh Sách Trống']);
+                    return of(null);
                 }
             }),
             catchError(this.handleError('getLeftStudentList'))
@@ -96,7 +100,7 @@ export class AttendanceService implements OnInit {
                 if (data['data']) {
                     return of(data['data'].filter(student => student['monitorState'] === null));
                 } else {
-                    return of(['Danh Sách Trống']);
+                    return of(null);
                 }
             }),
             catchError(this.handleError('getAbsenceStudentList'))

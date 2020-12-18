@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AlertController} from '@ionic/angular';
+import {AlertController, Platform} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AttendanceService} from '../../services/attendance.service';
 import {ClassRoomService} from '../../services/class-room.service';
@@ -21,34 +21,37 @@ export class TabsPage implements OnInit, OnDestroy {
         private attendanceService: AttendanceService,
         private classRoomService: ClassRoomService,
         private localNotification: LocalNotifications,
+        private platform: Platform,
     ) {
     }
 
     ngOnInit(): void {
         console.log('TAB PAGE INIT!!!!');
         this.classRoomService.chosenClassRoom.subscribe((className) => {
-            console.log("TAB PAGE CLASS NAME: ")
-            console.log(className)
-            if (className) {
+            console.log('TAB PAGE CLASS NAME: ');
+            console.log(className);
+            if (this.classRoomService.chosenClassName) {
                 console.log('TAB PAGE CHOSEN CLASS ROOM: ');
-                console.log(className);
+                console.log(this.classRoomService.chosenClassName);
 
-                this.attendanceService.getWholeClassAttendance(className).subscribe((classData) => {
-                    console.log("WHOLE CLASS DATA:");
+                this.attendanceService.getWholeClassAttendance(this.classRoomService.chosenClassName).subscribe((classData) => {
+                    console.log('WHOLE CLASS DATA:');
                     console.log(classData);
                     if (classData.data) {
-                        this.attendanceService.getAttendedStudentList(className).subscribe(attended => {
+                        this.attendanceService.getAttendedStudentList(this.classRoomService.chosenClassName).subscribe(attended => {
                             if (!this.attendedList) {
                                 this.attendedList = classData.data;
                             }
 
                             this.newAttendanceCheck = setInterval(
                                 () => {
-                                    const repeatedSubscribe = this.attendanceService.getAttendedStudentList(className).subscribe(attended => {
+                                    const repeatedSubscribe = this.attendanceService.getAttendedStudentList(this.classRoomService.chosenClassName).subscribe(attended => {
+                                        repeatedSubscribe.unsubscribe();
                                         if (attended.length > this.attendedList.length) {
                                             const onlyNews = attended.filter(this.compareStudentList(this.attendedList));
                                             if (onlyNews) {
                                                 this.showNewAttendedNotifications(onlyNews);
+
                                             }
                                         }
                                     });
@@ -59,18 +62,12 @@ export class TabsPage implements OnInit, OnDestroy {
                     }
                 });
             }
-                // else {
+            // else {
             //     this.presentAlertConfirm('Tên lớp không hợp lệ, vui lòng thử lại!');
             // }
         });
     }
 
-    async getChosenClassName() {
-        const className = this.route.snapshot.paramMap.get('className');
-        if (!className) {
-            this.presentAlertConfirm('Tên lớp không hợp lệ, vui lòng thử lại!');
-        }
-    }
 
     async presentAlertConfirm(msg: string) {
         const alert = await this.alertController.create({
@@ -102,6 +99,7 @@ export class TabsPage implements OnInit, OnDestroy {
         for (let i = 0; i < newStudents.length; i++) {
             notiMessages.push({
                 id: i,
+                sound: this.setSound(),
                 title: 'Thông Báo Điểm Danh',
                 text: `Học viên ${newStudents[i]['fullName']} đã có mặt tại lớp ${newStudents[i]['roomName']} ${newStudents[i]['areaName']} vào lúc ${new Date()}`
             });
@@ -109,6 +107,14 @@ export class TabsPage implements OnInit, OnDestroy {
 
         // @ts-ignore
         this.localNotification.schedule(notiMessages);
+    }
+
+    setSound() {
+        if (this.platform.is('android')) {
+            return 'file://assets/sound/quite-impressed-565.mp3';
+        } else {
+            return 'file://assets/sound/slow-spring-board-570.m4r';
+        }
     }
 
     ngOnDestroy(): void {

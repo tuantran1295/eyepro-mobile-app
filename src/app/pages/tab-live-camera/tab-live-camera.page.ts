@@ -19,6 +19,7 @@ export class TabLiveCameraPage implements OnInit {
     absenceNumber = 0;
     leftNumber = 0;
     currentDate = new Date();
+    loading = null;
 
 
     constructor(
@@ -30,9 +31,12 @@ export class TabLiveCameraPage implements OnInit {
     ) {
     }
 
-    ngOnInit(): void {
+    async ngOnInit() {
         this.resetPageData();
+        this.loading = await this.loadingController.create();
+        await this.loading.present();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
+
             if (className) {
                 console.log('Chosen CLASS NAME: ');
                 console.log(className);
@@ -87,6 +91,7 @@ export class TabLiveCameraPage implements OnInit {
             console.log(students);
             console.log(students.length);
             this.leftNumber = students.length;
+            this.loading.dismiss();
         });
     }
 

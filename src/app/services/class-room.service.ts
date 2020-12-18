@@ -18,6 +18,7 @@ export const GET_CLASSROOM_URL = 'http://27.71.228.53:9002/SmartClass/room/list/
 })
 export class ClassRoomService {
     chosenClassRoom: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+    chosenClassName: string = '';
 
     constructor(
         private http: HttpClient,
@@ -31,6 +32,7 @@ export class ClassRoomService {
     }
 
     chooseClass(className: string): Observable<any> {
+        this.chosenClassName = className;
         this.chosenClassRoom.next(className);
         return from(Storage.set({key: CHOSEN_CLASSROOM_KEY, value: className}));
     }
@@ -39,6 +41,7 @@ export class ClassRoomService {
         const chosenClass = await Storage.get({key: CHOSEN_CLASSROOM_KEY});
         if (chosenClass && chosenClass.value) {
             console.log('LOADED Chosen class: ', chosenClass.value);
+            this.chosenClassName = chosenClass.value;
             this.chosenClassRoom.next(chosenClass.value);
         } else {
             this.chosenClassRoom.next('');
