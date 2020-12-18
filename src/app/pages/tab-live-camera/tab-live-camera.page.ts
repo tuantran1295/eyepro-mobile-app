@@ -31,6 +31,7 @@ export class TabLiveCameraPage implements OnInit {
     }
 
     ngOnInit(): void {
+        this.resetPageData();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             if (className) {
                 console.log('Chosen CLASS NAME: ');
@@ -48,7 +49,7 @@ export class TabLiveCameraPage implements OnInit {
 
     getSchoolName(className) {
         this.attendanceService.getCurrentArea(className).subscribe(schoolName => {
-            this.schoolName += schoolName;
+            this.schoolName = schoolName;
         });
     }
 
@@ -98,5 +99,13 @@ export class TabLiveCameraPage implements OnInit {
         });
     }
 
-
+    resetPageData() {
+        this.schoolName = '';
+        this.className = '';
+        this.totalStudent = 0;
+        this.attendedNumber = 0;
+        this.absenceNumber = 0;
+        this.leftNumber = 0;
+        this.currentDate = new Date();
+    }
 }

@@ -19,6 +19,7 @@ export class TabCoMatPage implements OnInit {
     }
 
     ngOnInit(): void {
+        this.resetPageData();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             if (className) {
                 this.getCurrentClassName(className);
@@ -35,6 +36,12 @@ export class TabCoMatPage implements OnInit {
         this.attendanceService.getAttendedStudentList(className).subscribe(students => {
             this.studentList = students;
         });
+    }
+
+    resetPageData() {
+        this.studentList = [];
+        this.className = '';
+        this.currentDate = new Date();
     }
 
 }

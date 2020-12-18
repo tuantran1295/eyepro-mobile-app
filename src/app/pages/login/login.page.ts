@@ -30,15 +30,15 @@ export class LoginPage implements OnInit {
 
     ngOnInit() {
         this.autoLogin();
-        // this.credentials = this.formBuilder.group({
-        //     userName: ['view_301', [Validators.required, Validators.minLength(3)]],
-        //     password: ['abcd1234', [Validators.required, Validators.minLength(5)]]
-        // });
-
         this.credentials = this.formBuilder.group({
-            userName: ['admin', [Validators.required, Validators.minLength(3)]],
-            password: ['Diemdanh321', [Validators.required, Validators.minLength(5)]]
+            userName: ['view_301', [Validators.required, Validators.minLength(3)]],
+            password: ['abcd1234', [Validators.required, Validators.minLength(5)]]
         });
+
+        // this.credentials = this.formBuilder.group({
+        //     userName: ['admin', [Validators.required, Validators.minLength(3)]],
+        //     password: ['Diemdanh321', [Validators.required, Validators.minLength(5)]]
+        // });
     }
 
     autoLogin() {

@@ -18,6 +18,7 @@ export class TabBoTietPage implements OnInit {
     }
 
     ngOnInit(): void {
+        this.resetPageData();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             if (className) {
                 this.getCurrentClassName(className);
@@ -35,5 +36,11 @@ export class TabBoTietPage implements OnInit {
         this.attendanceService.getLeftStudentList(className).subscribe(students => {
             this.studentList = students;
         });
+    }
+
+    resetPageData() {
+        this.studentList = [];
+        this.className = '';
+        this.currentDate = new Date();
     }
 }

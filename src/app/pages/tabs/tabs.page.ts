@@ -27,6 +27,8 @@ export class TabsPage implements OnInit, OnDestroy {
     ngOnInit(): void {
         console.log('TAB PAGE INIT!!!!');
         this.classRoomService.chosenClassRoom.subscribe((className) => {
+            console.log("TAB PAGE CLASS NAME: ")
+            console.log(className)
             if (className) {
                 console.log('TAB PAGE CHOSEN CLASS ROOM: ');
                 console.log(className);
@@ -56,9 +58,10 @@ export class TabsPage implements OnInit, OnDestroy {
                         this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
                     }
                 });
-            } else {
-                this.presentAlertConfirm('Tên lớp không hợp lệ, vui lòng thử lại!');
             }
+                // else {
+            //     this.presentAlertConfirm('Tên lớp không hợp lệ, vui lòng thử lại!');
+            // }
         });
     }
 

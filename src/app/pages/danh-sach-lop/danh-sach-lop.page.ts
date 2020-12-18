@@ -21,6 +21,7 @@ export class DanhSachLopPage implements OnInit {
     }
 
     ngOnInit() {
+        this.resetPageData();
         this.getClassRoomList();
     }
 
@@ -72,6 +73,10 @@ export class DanhSachLopPage implements OnInit {
             return 1;
         }
         return 0;
+    }
+
+    resetPageData() {
+        this.classRoomList = [];
     }
 
 }
