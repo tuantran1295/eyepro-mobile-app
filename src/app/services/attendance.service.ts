@@ -4,9 +4,8 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError, filter, map, switchMap, tap} from 'rxjs/operators';
 import {ClassRoomService} from './class-room.service';
 
-const ATTENDANCE_API_URL = 'http://27.71.228.53:9002/SmartClass/student/timekeeping-room/roomId/';
+const ATTENDANCE_API_URL = '';
 
-// const ATTENDANCE_API_URL = '/assets/json/b4-sample-response.json';
 
 @Injectable({
     providedIn: 'root'
@@ -22,10 +21,6 @@ export class AttendanceService implements OnInit {
 
     }
 
-
-    public getSampleJSON(): Observable<any> {
-        return this.http.get('/assets/json/b4-sample-response.json');
-    }
 
     getWholeClassAttendance(className): Observable<any> {
         const url = ATTENDANCE_API_URL + className;

@@ -7,8 +7,7 @@ import {map, switchMap, tap} from 'rxjs/operators';
 const {Storage} = Plugins;
 
 export const LOGIN_TOKEN_KEY = 'login-token';
-export const LOGIN_URL = 'http://27.71.228.53:9002/SmartClass/auth/signin';
-// export const LOGIN_URL = 'http://27.71.228.53:9003/SmartClass/auth/signin';
+export const LOGIN_URL = '';
 
 @Injectable({
     providedIn: 'root'
