@@ -4,7 +4,7 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError, filter, map, switchMap, tap} from 'rxjs/operators';
 import {ClassRoomService} from './class-room.service';
 
-const ATTENDANCE_API_URL = '';
+const ATTENDANCE_API_URL = 'http://27.71.228.53:9002/SmartClass/student/timekeeping-room/roomId/';
 
 
 @Injectable({
