@@ -102,8 +102,8 @@ export class LoginPage implements OnInit {
         this.connect();
         this.autoLogin();
         this.credentials = this.formBuilder.group({
-            userName: ['', [Validators.required, Validators.minLength(3)]],
-            password: ['', [Validators.required, Validators.minLength(5)]]
+            userName: ['view_301', [Validators.required, Validators.minLength(3)]],
+            password: ['abcd1234', [Validators.required, Validators.minLength(5)]]
         });
     }
 
