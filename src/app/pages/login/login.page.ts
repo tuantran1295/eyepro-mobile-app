@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoginService } from '../../services/login.service';
-import { AlertController, LoadingController } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { HttpHeaders } from '@angular/common/http';
-import { Plugins } from '@capacitor/core';
-import { ClassRoomService } from '../../services/class-room.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {LoginService} from '../../services/login.service';
+import {AlertController, LoadingController} from '@ionic/angular';
+import {Router} from '@angular/router';
+import {HttpHeaders} from '@angular/common/http';
+import {Plugins} from '@capacitor/core';
+import {ClassRoomService} from '../../services/class-room.service';
 
-const { Storage } = Plugins;
+const {Storage} = Plugins;
+
 @Component({
     selector: 'app-login',
     templateUrl: './login.page.html',
@@ -77,11 +78,11 @@ export class LoginPage implements OnInit {
         this.classRoomService.loadChosenClassRoom().then(() => { // classRoomService.chosenClassRoom behaviour subject next value in this function
             this.classRoomService.chosenClassRoom.subscribe(chosenClass => {
                 if (chosenClass) {
-                    console.log("Login Page CHOSEN CLASS:");
+                    console.log('Login Page CHOSEN CLASS:');
                     console.log(chosenClass);
-                    this.router.navigateByUrl('/thong-tin-lop/' + chosenClass, { replaceUrl: true });
+                    this.router.navigateByUrl('/thong-tin-lop/' + chosenClass, {replaceUrl: true});
                 } else {
-                    this.router.navigateByUrl('/danh-sach-lop', { replaceUrl: true });
+                    this.router.navigateByUrl('/danh-sach-lop', {replaceUrl: true});
                 }
             });
         });

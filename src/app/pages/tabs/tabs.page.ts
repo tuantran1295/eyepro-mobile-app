@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AttendanceService} from '../../services/attendance.service';
 import {ClassRoomService} from '../../services/class-room.service';
 import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
 
 @Component({
     selector: 'app-tabs',
@@ -11,8 +13,10 @@ import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
     styleUrls: ['tabs.page.scss']
 })
 export class TabsPage implements OnInit, OnDestroy {
-    attendedList = [];
-    newAttendanceCheck = null;
+    webSocketEndPoint = 'http://27.71.228.53:9002/SmartClass/student-websocket';
+    topicURL = '/topic/newMonitor/';
+    // topic = '/topic/newMonitor/B6';
+    stompClient: any;
 
     constructor(
         public alertController: AlertController,
@@ -26,48 +30,66 @@ export class TabsPage implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.topicURL = '/topic/newMonitor/';
+
         console.log('TAB PAGE INIT!!!!');
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             console.log('TAB PAGE CLASS NAME: ');
             console.log(className);
             if (this.classRoomService.chosenClassName) {
+                this.topicURL = this.topicURL + this.classRoomService.chosenClassName;
+
                 console.log('TAB PAGE CHOSEN CLASS ROOM: ');
                 console.log(this.classRoomService.chosenClassName);
+                console.log(this.topicURL);
 
                 this.attendanceService.getWholeClassAttendance(this.classRoomService.chosenClassName).subscribe((classData) => {
                     console.log('WHOLE CLASS DATA:');
                     console.log(classData);
                     if (classData.data) {
-                        this.attendanceService.getAttendedStudentList(this.classRoomService.chosenClassName).subscribe(attended => {
-                            if (!this.attendedList) {
-                                this.attendedList = classData.data;
-                            }
-
-                            this.newAttendanceCheck = setInterval(
-                                () => {
-                                    const repeatedSubscribe = this.attendanceService.getAttendedStudentList(this.classRoomService.chosenClassName).subscribe(attended => {
-                                        repeatedSubscribe.unsubscribe();
-                                        if (attended.length > this.attendedList.length) {
-                                            const onlyNews = attended.filter(this.compareStudentList(this.attendedList));
-                                            if (onlyNews) {
-                                                this.showNewAttendedNotifications(onlyNews);
-
-                                            }
-                                        }
-                                    });
-                                }, 20 * 10000);
-                        });
+                        this.connectToNotificationSocket();
                     } else {
                         this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
                     }
                 });
             }
-            // else {
-            //     this.presentAlertConfirm('Tên lớp không hợp lệ, vui lòng thử lại!');
-            // }
         });
     }
 
+
+    connectToNotificationSocket() {
+        console.log('Initialize WebSocket Connection');
+        const ws = new SockJS(this.webSocketEndPoint);
+        this.stompClient = Stomp.over(ws);
+        const _this = this;
+
+        _this.stompClient.connect({}, function(frame) {
+            _this.stompClient.subscribe(_this.topicURL, function(sdkEvent) {
+                _this.onNotiMessageReceived(sdkEvent);
+            });
+            // _this.stompClient.reconnect_delay = 2000;
+        }, this.errorCallBack);
+    };
+
+    disconnectNotificationSocket() {
+        if (this.stompClient !== null) {
+            this.stompClient.disconnect();
+        }
+        console.log('Disconnected');
+    }
+
+    // on error, schedule a reconnection attempt
+    errorCallBack(error) {
+        console.log('errorCallBack -> ' + error);
+        setTimeout(() => {
+            this.connectToNotificationSocket();
+        }, 5000);
+    }
+
+    onNotiMessageReceived(message) {
+        console.log('Message Recieved from Server :: ' + message);
+        this.showNotification(message.body)
+    }
 
     async presentAlertConfirm(msg: string) {
         const alert = await this.alertController.create({
@@ -86,27 +108,15 @@ export class TabsPage implements OnInit, OnDestroy {
         await alert.present();
     }
 
-    compareStudentList(otherArray) {
-        return function(current) {
-            return otherArray.filter(function(other) {
-                return other.studentId == current.studentId && other.fullName == current.fullName;
-            }).length == 0;
-        };
-    }
 
-    showNewAttendedNotifications(newStudents) {
-        let notiMessages = [];
-        for (let i = 0; i < newStudents.length; i++) {
-            notiMessages.push({
-                id: i,
-                sound: this.setSound(),
-                title: 'Thông Báo Điểm Danh',
-                text: `Học viên ${newStudents[i]['fullName']} đã có mặt tại lớp ${newStudents[i]['roomName']} ${newStudents[i]['areaName']} vào lúc ${new Date()}`
-            });
-        }
-
+    showNotification(message) {
         // @ts-ignore
-        this.localNotification.schedule(notiMessages);
+        this.localNotification.schedule({
+            id: 1,
+            sound: this.setSound(),
+            title: 'Thông Báo Điểm Danh',
+            text: `Học viên ${message.name} đã có mặt tại lớp ${message.roomId} vào lúc ${new Date()}`
+        });
     }
 
     setSound() {
@@ -118,9 +128,7 @@ export class TabsPage implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if (this.newAttendanceCheck) {
-            clearInterval(this.newAttendanceCheck);
-        }
+        this.disconnectNotificationSocket();
     }
 
 }
