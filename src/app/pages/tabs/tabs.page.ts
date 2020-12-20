@@ -42,12 +42,12 @@ export class TabsPage implements OnInit, OnDestroy {
                 console.log('TAB PAGE CHOSEN CLASS ROOM: ');
                 console.log(this.classRoomService.chosenClassName);
                 console.log(this.topicURL);
-
+                this.connectToNotificationSocket();
                 this.attendanceService.getWholeClassAttendance(this.classRoomService.chosenClassName).subscribe((classData) => {
                     console.log('WHOLE CLASS DATA:');
                     console.log(classData);
                     if (classData.data) {
-                        this.connectToNotificationSocket();
+                        // this.connectToNotificationSocket();
                     } else {
                         this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
                     }
@@ -61,15 +61,14 @@ export class TabsPage implements OnInit, OnDestroy {
         console.log('Initialize WebSocket Connection');
         const ws = new SockJS(this.webSocketEndPoint);
         this.stompClient = Stomp.over(ws);
-        const _this = this;
 
-        _this.stompClient.connect({}, function(frame) {
-            _this.stompClient.subscribe(_this.topicURL, function(sdkEvent) {
-                _this.onNotiMessageReceived(sdkEvent);
+        this.stompClient.connect({}, (frame) => {
+            this.stompClient.subscribe(this.topicURL, (sdkEvent) => {
+                this.onNotiMessageReceived(sdkEvent);
             });
             // _this.stompClient.reconnect_delay = 2000;
         }, this.errorCallBack);
-    };
+    }
 
     disconnectNotificationSocket() {
         if (this.stompClient !== null) {
@@ -88,7 +87,7 @@ export class TabsPage implements OnInit, OnDestroy {
 
     onNotiMessageReceived(message) {
         console.log('Message Recieved from Server :: ' + message);
-        this.showNotification(message.body)
+        this.showNotification(JSON.parse(message.body));
     }
 
     async presentAlertConfirm(msg: string) {
@@ -115,8 +114,16 @@ export class TabsPage implements OnInit, OnDestroy {
             id: 1,
             sound: this.setSound(),
             title: 'Thông Báo Điểm Danh',
-            text: `Học viên ${message.name} đã có mặt tại lớp ${message.roomId} vào lúc ${new Date()}`
+            text: `Học viên ${message.name} đã có mặt tại lớp ${message.roomId} Học viện chính trị Quốc gia HCM Khu vực 1 vào lúc ${this.getCurrentTime()}`
         });
+    }
+
+    getCurrentTime() {
+        const today = new Date();
+        const date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+        const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+        const dateTime = time + ' ngày ' + date;
+        return dateTime;
     }
 
     setSound() {
