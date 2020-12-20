@@ -38,6 +38,7 @@ export class TabLiveCameraPage implements OnInit {
         this.classRoomService.chosenClassRoom.subscribe((className) => {
 
             if (className) {
+                this.loading.dismiss();
                 console.log('Chosen CLASS NAME: ');
                 console.log(className);
                 this.getSchoolName(className);
@@ -91,7 +92,7 @@ export class TabLiveCameraPage implements OnInit {
             console.log(students);
             console.log(students.length);
             this.leftNumber = students.length;
-            this.loading.dismiss();
+
         });
     }
 
