@@ -30,6 +30,7 @@
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
     "jetifier": "^1.6.6",
+    "net": "^1.0.2",
     "rxjs": "~6.5.5",
     "sockjs-client": "^1.3.0",
     "stompjs": "^2.3.3",
