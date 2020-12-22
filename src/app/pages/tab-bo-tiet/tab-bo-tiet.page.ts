@@ -26,9 +26,9 @@ export class TabBoTietPage implements OnInit {
         this.loading = await this.loadingController.create();
         await this.loading.present();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
-            if (this.classRoomService.chosenClassName) {
-                this.getCurrentClassName(this.classRoomService.chosenClassName);
-                this.getLeftStudent(this.classRoomService.chosenClassName);
+            if (className) {
+                this.getCurrentClassName(className);
+                this.getLeftStudent();
             }
         });
 
@@ -38,9 +38,11 @@ export class TabBoTietPage implements OnInit {
         this.className = name;
     }
 
-    getLeftStudent(className) {
-        this.attendanceService.getLeftStudentList(className).subscribe(students =>  {
-            this.studentList = students;
+    getLeftStudent() {
+        this.attendanceService.left.subscribe(students =>  {
+            if (students) {
+                this.studentList = students;
+            }
             this.loading.dismiss();
         });
     }

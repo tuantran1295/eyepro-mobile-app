@@ -26,11 +26,11 @@ export class TabCoMatPage implements OnInit {
         this.loading = await this.loadingController.create();
         await this.loading.present();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
-            if (this.classRoomService.chosenClassName) {
+            if (className) {
                 console.log("CO MAT CLASS ROOM: ");
-                console.log(this.classRoomService.chosenClassName);
-                this.getCurrentClassName(this.classRoomService.chosenClassName);
-                this.getAttendedStudent(this.classRoomService.chosenClassName);
+                console.log(className);
+                this.getCurrentClassName(className);
+                this.getAttendedStudent();
             }
         });
     }
@@ -39,8 +39,8 @@ export class TabCoMatPage implements OnInit {
         this.className = name;
     }
 
-    getAttendedStudent(className) {
-        this.attendanceService.getAttendedStudentList(className).subscribe(students => {
+    getAttendedStudent() {
+        this.attendanceService.attended.subscribe(students => {
             this.studentList = students;
             this.loading.dismiss();
         });

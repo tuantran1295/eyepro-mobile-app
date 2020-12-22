@@ -23,11 +23,11 @@ export class TabVangMatPage {
     async ngOnInit() {
         const loading = await this.loadingController.create();
         await loading.present();
-        this.classRoomService.chosenClassRoom.subscribe(() => {
+        this.classRoomService.chosenClassRoom.subscribe((className) => {
             loading.dismiss();
-            if (this.classRoomService.chosenClassName) {
-                this.getCurrentClassName(this.classRoomService.chosenClassName);
-                this.getAbsenceStudent(this.classRoomService.chosenClassName);
+            if (className) {
+                this.getCurrentClassName(className);
+                this.getAbsenceStudent();
             }
         });
 
@@ -37,9 +37,11 @@ export class TabVangMatPage {
         this.className = name;
     }
 
-    getAbsenceStudent(className) {
-        this.attendanceService.getAbsenceStudentList(className).subscribe(students => {
-            this.studentList = students;
+    getAbsenceStudent() {
+        this.attendanceService.attended.subscribe(students => {
+            if (students) {
+                this.studentList = students;
+            }
         });
     }
 }

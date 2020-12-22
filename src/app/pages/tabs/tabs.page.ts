@@ -36,22 +36,19 @@ export class TabsPage implements OnInit, OnDestroy {
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             console.log('TAB PAGE CLASS NAME: ');
             console.log(className);
-            if (this.classRoomService.chosenClassName) {
-                this.topicURL = this.topicURL + this.classRoomService.chosenClassName;
+            if (className) {
+                this.topicURL = this.topicURL + className;
 
                 console.log('TAB PAGE CHOSEN CLASS ROOM: ');
-                console.log(this.classRoomService.chosenClassName);
+                console.log(className);
                 console.log(this.topicURL);
-                this.connectToNotificationSocket();
-                this.attendanceService.getWholeClassAttendance(this.classRoomService.chosenClassName).subscribe((classData) => {
-                    console.log('WHOLE CLASS DATA:');
-                    console.log(classData);
-                    if (classData.data) {
-                        // this.connectToNotificationSocket();
-                    } else {
-                        this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
-                    }
-                });
+                const isDataExist = this.attendanceService.getClassAttendance(className);
+                if (isDataExist) {
+                    this.connectToNotificationSocket();
+                } else {
+                    this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
+                }
+
             }
         });
     }
@@ -87,6 +84,8 @@ export class TabsPage implements OnInit, OnDestroy {
 
     onNotiMessageReceived(message) {
         console.log('Message Recieved from Server :: ' + message);
+        console.log("NOTIFICATION MESSAGE: ");
+        console.log(JSON.parse(message.body));
         this.showNotification(JSON.parse(message.body));
     }
 

@@ -41,20 +41,24 @@ export class TabLiveCameraPage implements OnInit {
                 this.loading.dismiss();
                 console.log('Chosen CLASS NAME: ');
                 console.log(className);
-                this.getSchoolName(className);
+                this.getSchoolName();
                 this.getCurrentClassName(className);
-                this.getTotalStudent(className);
-                this.getAttendedNumber(className);
-                this.getAbsenceNumber(className);
-                this.getLeftNumber(className);
+                this.getTotalStudent();
+                this.getAttendedNumber();
+                this.getAbsenceNumber();
+                this.getLeftNumber();
             }
         });
 
     }
 
-    getSchoolName(className) {
-        this.attendanceService.getCurrentArea(className).subscribe(schoolName => {
-            this.schoolName = schoolName;
+    getSchoolName() {
+        this.attendanceService.areaName.subscribe(schoolName => {
+            console.log("LIVE CAMERA AREA NAME: ");
+            console.log(schoolName);
+            if (schoolName) {
+                this.schoolName = schoolName;
+            }
         });
     }
 
@@ -62,37 +66,49 @@ export class TabLiveCameraPage implements OnInit {
         this.className = name;
     }
 
-    getTotalStudent(className) {
-        this.attendanceService.getTotalStudent(className).subscribe(studentNo => {
-            this.totalStudent = Number(studentNo);
+    getTotalStudent() {
+        this.attendanceService.totalStudent.subscribe(studentNo => {
+            if (studentNo) {
+                this.totalStudent = Number(studentNo);
+            }
         });
     }
 
-    getAttendedNumber(className) {
-        this.attendanceService.getAttendedStudentList(className).subscribe(students => {
+    getAttendedNumber() {
+        this.attendanceService.attended.subscribe(students => {
             console.log('ATTENDED LENGTH: ');
             console.log(students);
-            console.log(students.length);
-            this.attendedNumber = students.length;
+
+            if (students) {
+                console.log(students.length);
+                this.attendedNumber = students.length;
+            }
+
         });
     }
 
-    getAbsenceNumber(className) {
-        this.attendanceService.getAbsenceStudentList(className).subscribe((students) => {
+    getAbsenceNumber() {
+        this.attendanceService.absence.subscribe((students) => {
             console.log('ABSENCE LENGTH: ');
             console.log(students);
-            console.log(students.length);
-            this.absenceNumber = students.length;
+
+            if (students) {
+                console.log(students.length);
+                this.absenceNumber = students.length;
+            }
+
         });
     }
 
-    getLeftNumber(className) {
-        this.attendanceService.getLeftStudentList(className).subscribe((students) => {
+    getLeftNumber() {
+        this.attendanceService.left.subscribe((students) => {
             console.log('LEFT LENGTH: ');
             console.log(students);
-            console.log(students.length);
-            this.leftNumber = students.length;
 
+            if (students) {
+                console.log(students.length);
+                this.leftNumber = students.length;
+            }
         });
     }
 
