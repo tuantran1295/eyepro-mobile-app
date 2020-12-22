@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AttendanceService} from '../../services/attendance.service';
 import {ClassRoomService} from '../../services/class-room.service';
 import {LoadingController} from '@ionic/angular';
+import {LoadingService} from '../../services/loading.service';
 
 @Component({
     selector: 'app-tab-co-mat',
@@ -17,16 +18,14 @@ export class TabCoMatPage implements OnInit {
     constructor(
         private attendanceService: AttendanceService,
         private classRoomService: ClassRoomService,
-        private loadingController: LoadingController,
+        private loadingService: LoadingService,
     ) {
     }
 
     async ngOnInit() {
         this.resetPageData();
-        this.loading = await this.loadingController.create();
-        await this.loading.present();
+        this.loadingService.presentLoading();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
-            this.loading.dismiss();
             console.log("CO MAT CLASS NAME: ");
             console.log(className);
             if (className) {
@@ -44,8 +43,8 @@ export class TabCoMatPage implements OnInit {
 
     getAttendedStudent() {
         this.attendanceService.attended.subscribe(students => {
+            this.loadingService.dismissLoading();
             this.studentList = students;
-
         });
     }
 

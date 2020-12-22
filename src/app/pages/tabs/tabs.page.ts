@@ -6,6 +6,7 @@ import {ClassRoomService} from '../../services/class-room.service';
 import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
+import {LoadingService} from '../../services/loading.service';
 
 @Component({
     selector: 'app-tabs',
@@ -29,6 +30,7 @@ export class TabsPage implements OnInit, OnDestroy {
         private classRoomService: ClassRoomService,
         private localNotification: LocalNotifications,
         private platform: Platform,
+        private loadingService: LoadingService,
     ) {
     }
 
@@ -59,7 +61,9 @@ export class TabsPage implements OnInit, OnDestroy {
                     if (isDataExist) {
                         this.connectToNotificationSocket();
                     } else {
-                        this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
+                        this.loadingService.dismissLoading().then(() => {
+                            this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
+                        });
                     }
                 }
             });

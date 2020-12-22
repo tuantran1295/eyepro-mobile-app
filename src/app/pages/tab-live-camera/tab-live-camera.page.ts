@@ -4,6 +4,7 @@ import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
 import {LoadingController} from '@ionic/angular';
 import {ClassRoomService} from '../../services/class-room.service';
+import {LoadingService} from '../../services/loading.service';
 
 @Component({
     selector: 'app-tab-live-camera',
@@ -27,18 +28,16 @@ export class TabLiveCameraPage implements OnInit {
         private attendanceService: AttendanceService,
         private loginService: LoginService,
         private router: Router,
-        private loadingController: LoadingController,
+        private loadingService: LoadingService,
     ) {
     }
 
     async ngOnInit() {
+        this.loadingService.presentLoading();
         this.resetPageData();
-        this.loading = await this.loadingController.create();
-        await this.loading.present();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
 
             if (className) {
-                this.loading.dismiss();
                 console.log('Chosen CLASS NAME: ');
                 console.log(className);
                 this.getSchoolName();
@@ -54,7 +53,7 @@ export class TabLiveCameraPage implements OnInit {
 
     getSchoolName() {
         this.attendanceService.areaName.subscribe(schoolName => {
-            console.log("LIVE CAMERA AREA NAME: ");
+            console.log('LIVE CAMERA AREA NAME: ');
             console.log(schoolName);
             if (schoolName) {
                 this.schoolName = schoolName;
@@ -105,6 +104,7 @@ export class TabLiveCameraPage implements OnInit {
             console.log('LEFT LENGTH: ');
             console.log(students);
 
+            this.loadingService.dismissLoading();
             if (students) {
                 console.log(students.length);
                 this.leftNumber = students.length;
@@ -113,10 +113,9 @@ export class TabLiveCameraPage implements OnInit {
     }
 
     async logout() {
-        const loading = await this.loadingController.create();
-        await loading.present();
+        this.loadingService.presentLoading();
         this.loginService.logout().then(() => {
-            loading.dismiss();
+            this.loadingService.dismissLoading();
             this.router.navigateByUrl('/login', {replaceUrl: true});
         });
     }

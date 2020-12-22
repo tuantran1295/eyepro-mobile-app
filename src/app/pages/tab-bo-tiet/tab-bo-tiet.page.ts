@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AttendanceService} from '../../services/attendance.service';
 import {ClassRoomService} from '../../services/class-room.service';
 import {LoadingController} from '@ionic/angular';
+import {LoadingService} from '../../services/loading.service';
 
 @Component({
     selector: 'app-tab-bo-tiet',
@@ -17,14 +18,13 @@ export class TabBoTietPage implements OnInit {
     constructor(
         private classRoomService: ClassRoomService,
         private attendanceService: AttendanceService,
-        private loadingController: LoadingController,
+        private loadingService: LoadingService,
     ) {
     }
 
     async ngOnInit() {
         this.resetPageData();
-        this.loading = await this.loadingController.create();
-        await this.loading.present();
+        this.loadingService.presentLoading();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             if (className) {
                 this.getCurrentClassName(className);
@@ -40,6 +40,7 @@ export class TabBoTietPage implements OnInit {
 
     getLeftStudent() {
         this.attendanceService.left.subscribe(students =>  {
+            this.loadingService.dismissLoading();
             if (students) {
                 this.studentList = students;
             }
