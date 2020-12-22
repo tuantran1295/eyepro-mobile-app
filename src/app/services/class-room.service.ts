@@ -15,7 +15,7 @@ export const GET_CLASSROOM_URL = 'http://27.71.228.53:9002/SmartClass/room/list/
     providedIn: 'root'
 })
 export class ClassRoomService {
-    chosenClassRoom: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+    chosenClassRoom: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
     constructor(
         private http: HttpClient,

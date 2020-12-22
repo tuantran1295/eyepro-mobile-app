@@ -36,32 +36,33 @@ export class TabsPage implements OnInit, OnDestroy {
         this.topicURL = '/topic/newMonitor/';
 
         console.log('TAB PAGE INIT!!!!');
-        this.classRoomService.chosenClassRoom.subscribe((className) => {
-            console.log('TAB PAGE CLASS NAME: ');
-            console.log(className);
-            if (className) {
-                this.topicURL = this.topicURL + className;
-
-                console.log('TAB PAGE CHOSEN CLASS ROOM: ');
+        this.classRoomService.loadChosenClassRoom().then(() => {
+            this.classRoomService.chosenClassRoom.subscribe((className) => {
+                console.log('TAB PAGE CLASS NAME: ');
                 console.log(className);
-                console.log(this.topicURL);
+                if (className) {
+                    this.topicURL = this.topicURL + className;
 
-                this.attendanceService.attended.subscribe(students => {
-                    this.attendedList = students;
-                });
+                    console.log('TAB PAGE CHOSEN CLASS ROOM: ');
+                    console.log(className);
+                    console.log(this.topicURL);
 
-                this.attendanceService.absence.subscribe(students => {
-                    this.absenceList = students;
-                });
+                    this.attendanceService.attended.subscribe(students => {
+                        this.attendedList = students;
+                    });
 
-                const isDataExist = this.attendanceService.getClassAttendance(className);
-                if (isDataExist) {
-                    this.connectToNotificationSocket();
-                } else {
-                    this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
+                    this.attendanceService.absence.subscribe(students => {
+                        this.absenceList = students;
+                    });
+
+                    const isDataExist = this.attendanceService.getClassAttendance(className);
+                    if (isDataExist) {
+                        this.connectToNotificationSocket();
+                    } else {
+                        this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
+                    }
                 }
-
-            }
+            });
         });
     }
 
@@ -107,10 +108,11 @@ export class TabsPage implements OnInit, OnDestroy {
     updateStudentList(notiUserID) {
         let i = 0;
         while (i < this.absenceList.length) {
-            let item = this.absenceList[i];
-            if (item.studentId === notiUserID) {
+            let currentStudent = this.absenceList[i];
+            if (currentStudent.studentId === notiUserID) {
                 this.absenceList.splice(i, 1);
-                this.attendedList.push(item);
+                currentStudent.timeInout = this.getCurrentTime();
+                this.attendedList.push(currentStudent);
                 // @ts-ignore
                 this.attendanceService.attended.next(this.attendedList);
                 // @ts-ignore
