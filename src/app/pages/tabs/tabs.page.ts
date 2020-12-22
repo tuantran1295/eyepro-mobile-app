@@ -18,6 +18,9 @@ export class TabsPage implements OnInit, OnDestroy {
     // topic = '/topic/newMonitor/B6';
     stompClient: any;
 
+    attendedList = [];
+    absenceList = [];
+
     constructor(
         public alertController: AlertController,
         public route: ActivatedRoute,
@@ -42,6 +45,15 @@ export class TabsPage implements OnInit, OnDestroy {
                 console.log('TAB PAGE CHOSEN CLASS ROOM: ');
                 console.log(className);
                 console.log(this.topicURL);
+
+                this.attendanceService.attended.subscribe(students => {
+                    this.attendedList = students;
+                });
+
+                this.attendanceService.absence.subscribe(students => {
+                    this.absenceList = students;
+                });
+
                 const isDataExist = this.attendanceService.getClassAttendance(className);
                 if (isDataExist) {
                     this.connectToNotificationSocket();
@@ -84,9 +96,29 @@ export class TabsPage implements OnInit, OnDestroy {
 
     onNotiMessageReceived(message) {
         console.log('Message Recieved from Server :: ' + message);
-        console.log("NOTIFICATION MESSAGE: ");
+        console.log('NOTIFICATION MESSAGE: ');
         console.log(JSON.parse(message.body));
-        this.showNotification(JSON.parse(message.body));
+        const notiMessage = JSON.parse(message.body);
+        this.showNotification(notiMessage);
+        this.updateStudentList(notiMessage.studentId);
+    }
+
+
+    updateStudentList(notiUserID) {
+        let i = 0;
+        while (i < this.absenceList.length) {
+            let item = this.absenceList[i];
+            if (item.studentId === notiUserID) {
+                this.absenceList.splice(i, 1);
+                this.attendedList.push(item);
+                // @ts-ignore
+                this.attendanceService.attended.next(this.attendedList);
+                // @ts-ignore
+                this.attendanceService.absence.next(this.absenceList);
+            } else {
+                i++;
+            }
+        }
     }
 
     async presentAlertConfirm(msg: string) {

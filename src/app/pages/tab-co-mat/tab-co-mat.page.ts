@@ -26,6 +26,9 @@ export class TabCoMatPage implements OnInit {
         this.loading = await this.loadingController.create();
         await this.loading.present();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
+            this.loading.dismiss();
+            console.log("CO MAT CLASS NAME: ");
+            console.log(className);
             if (className) {
                 console.log("CO MAT CLASS ROOM: ");
                 console.log(className);
@@ -42,7 +45,7 @@ export class TabCoMatPage implements OnInit {
     getAttendedStudent() {
         this.attendanceService.attended.subscribe(students => {
             this.studentList = students;
-            this.loading.dismiss();
+
         });
     }
 
