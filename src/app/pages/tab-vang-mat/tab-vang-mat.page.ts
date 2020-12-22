@@ -38,7 +38,9 @@ export class TabVangMatPage {
     }
 
     getAbsenceStudent() {
-        this.attendanceService.attended.subscribe(students => {
+        this.attendanceService.absence.subscribe(students => {
+            console.log('TabVangMatPage');
+            console.log(students);
             if (students) {
                 this.studentList = students;
             }
