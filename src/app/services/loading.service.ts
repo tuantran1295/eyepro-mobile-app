@@ -5,7 +5,7 @@ import {LoadingController} from '@ionic/angular';
     providedIn: 'root'
 })
 export class LoadingService implements OnInit {
-    loading;
+    loading = null;
 
     constructor(
         private loadingController: LoadingController,
@@ -13,15 +13,22 @@ export class LoadingService implements OnInit {
     }
 
     async ngOnInit() {
-        this.loading = await this.loadingController.create();
+        console.log("LOADING SERVICE INIT!!!!");
+        console.log("||||||||||||||||||||||||||||||||||||");
+
     }
 
     async presentLoading() {
+        if (!this.loading) {
+            this.loading = await this.loadingController.create();
+        }
         return await this.loading.present();
 
     }
 
     async dismissLoading() {
-        return await this.loading.dismiss();
+        if (this.loading) {
+            return await this.loading.dismiss();
+        }
     }
 }

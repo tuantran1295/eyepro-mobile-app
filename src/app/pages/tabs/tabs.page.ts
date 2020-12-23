@@ -61,9 +61,8 @@ export class TabsPage implements OnInit, OnDestroy {
                     if (isDataExist) {
                         this.connectToNotificationSocket();
                     } else {
-                        this.loadingService.dismissLoading().then(() => {
-                            this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
-                        });
+                        this.loadingService.dismissLoading();
+                        this.presentAlertConfirm(`Không có ca học cho lớp ${className} tại thời điểm hiện tại`);
                     }
                 }
             });

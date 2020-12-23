@@ -44,7 +44,6 @@ export class TabBoTietPage implements OnInit {
             if (students) {
                 this.studentList = students;
             }
-            this.loading.dismiss();
         });
     }
 
