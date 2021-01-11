@@ -99,7 +99,8 @@ export class TabsPage implements OnInit, OnDestroy {
     }
 
     onNotiMessageReceived(message) {
-        console.log('Message Recieved from Server :: ' + message);
+        this.loadingService.dismissLoading();
+        console.log('Message Received from Server :: ' + message);
         console.log('NOTIFICATION MESSAGE: ');
         console.log(JSON.parse(message.body));
         const notiMessage = JSON.parse(message.body);
