@@ -24,7 +24,7 @@ export class TabCoMatPage implements OnInit {
 
     async ngOnInit() {
         this.resetPageData();
-        this.loadingService.presentLoading();
+        // this.loadingService.presentLoading();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             console.log("CO MAT CLASS NAME: ");
             console.log(className);

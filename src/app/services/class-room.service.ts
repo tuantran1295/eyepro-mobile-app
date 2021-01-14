@@ -9,7 +9,9 @@ import {LOGIN_TOKEN_KEY} from './login.service';
 const {Storage} = Plugins;
 
 export const CHOSEN_CLASSROOM_KEY = 'chosen-class-room';
-export const GET_CLASSROOM_URL = 'http://27.71.228.53:9002/SmartClass/room/list/1?textSearch';
+export const GET_CLASSROOM_URL = 'http://10.0.0.183:9003/SmartClass/room/list/1?textSearch';
+
+// export const GET_CLASSROOM_URL = 'http://27.71.228.53:9002/SmartClass/room/list/1?textSearch';
 
 @Injectable({
     providedIn: 'root'

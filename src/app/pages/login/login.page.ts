@@ -32,8 +32,10 @@ export class LoginPage implements OnInit {
         this.credentials = this.formBuilder.group({
             // userName: ['view_301', [Validators.required, Validators.minLength(3)]],
             // password: ['abcd1234', [Validators.required, Validators.minLength(5)]]
-            userName: ['admin6', [Validators.required, Validators.minLength(3)]],
-            password: ['123456aA@', [Validators.required, Validators.minLength(5)]]
+            // userName: ['admin6', [Validators.required, Validators.minLength(3)]],
+            // password: ['123456aA@', [Validators.required, Validators.minLength(5)]]
+            userName: ['vdsmart', [Validators.required, Validators.minLength(3)]],
+            password: ['Vdsmart321', [Validators.required, Validators.minLength(5)]]
         });
     }
 

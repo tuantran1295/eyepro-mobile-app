@@ -33,7 +33,7 @@ export class TabLiveCameraPage implements OnInit {
     }
 
     async ngOnInit() {
-        this.loadingService.presentLoading();
+        // this.loadingService.presentLoading();
         this.resetPageData();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
 
@@ -113,7 +113,7 @@ export class TabLiveCameraPage implements OnInit {
     }
 
     async logout() {
-        this.loadingService.presentLoading();
+        // this.loadingService.presentLoading();
         this.loginService.logout().then(() => {
             this.loadingService.dismissLoading();
             this.router.navigateByUrl('/login', {replaceUrl: true});

@@ -24,7 +24,7 @@ export class TabBoTietPage implements OnInit {
 
     async ngOnInit() {
         this.resetPageData();
-        this.loadingService.presentLoading();
+        // this.loadingService.presentLoading();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             if (className) {
                 this.getCurrentClassName(className);

@@ -21,10 +21,10 @@ export class TabVangMatPage {
     }
 
     async ngOnInit() {
-        const loading = await this.loadingController.create();
-        await loading.present();
+        // const loading = await this.loadingController.create();
+        // await loading.present();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
-            loading.dismiss();
+            // loading.dismiss();
             if (className) {
                 this.getCurrentClassName(className);
                 this.getAbsenceStudent();

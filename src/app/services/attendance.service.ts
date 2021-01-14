@@ -4,7 +4,9 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError, filter, map, switchMap, tap} from 'rxjs/operators';
 import {ClassRoomService} from './class-room.service';
 
-const ATTENDANCE_API_URL = 'http://27.71.228.53:9002/SmartClass/student/timekeeping-room/roomId/';
+const ATTENDANCE_API_URL = 'http://10.0.0.183:9003/SmartClass/student/timekeeping-room/roomId/';
+
+// const ATTENDANCE_API_URL = 'http://27.71.228.53:9002/SmartClass/student/timekeeping-room/roomId/';
 
 
 @Injectable({
@@ -35,7 +37,7 @@ export class AttendanceService implements OnInit {
             const studentList: [] = students['data'];
             console.log("AttendanceService ATTENDED LIST:");
             console.log(studentList);
-            if (studentList) {
+            if (Array.isArray(studentList) && studentList.length > 0) {
                 const attendedStudent = studentList.filter(student => student['monitorState'] === 1);
                 console.log("AttendanceService getClassAttendance:")
                 console.log(attendedStudent);
@@ -57,7 +59,7 @@ export class AttendanceService implements OnInit {
                 const schoolName = studentList[0].areaName;
                 this.areaName.next(schoolName);
                 return true;
-            } else { // khong co ca hoc
+            } else { // khong co ca hoc, show thong bao khong co ca hoc src/app/pages/tabs/tabs.page.ts
                 return null;
             }
         }
