@@ -3,8 +3,9 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError, filter, map, switchMap, tap} from 'rxjs/operators';
 import {ClassRoomService} from './class-room.service';
+import {environment} from '../../environments/environment';
 
-const ATTENDANCE_API_URL = 'http://10.0.0.183:9003/SmartClass/student/timekeeping-room/roomId/';
+const ATTENDANCE_API_URL = environment.rootURL + 'SmartClass/student/timekeeping-room/roomId/';
 
 // const ATTENDANCE_API_URL = 'http://27.71.228.53:9002/SmartClass/student/timekeeping-room/roomId/';
 

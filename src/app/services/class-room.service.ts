@@ -5,11 +5,12 @@ import {BehaviorSubject, from, Observable, of} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {Plugins} from '@capacitor/core';
 import {LOGIN_TOKEN_KEY} from './login.service';
+import {environment} from '../../environments/environment';
 
 const {Storage} = Plugins;
 
 export const CHOSEN_CLASSROOM_KEY = 'chosen-class-room';
-export const GET_CLASSROOM_URL = 'http://10.0.0.183:9003/SmartClass/room/list/1?textSearch';
+export const GET_CLASSROOM_URL = environment.rootURL + 'SmartClass/room/list/1?textSearch';
 
 // export const GET_CLASSROOM_URL = 'http://27.71.228.53:9002/SmartClass/room/list/1?textSearch';
 
