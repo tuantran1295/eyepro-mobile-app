@@ -1,4 +1,4 @@
-# App mobile của cụ Tuấn
+
 <!-- ![VDSMART](http://27.71.228.53:9002/SmartClass/assets/img/smartclass-mini.png) -->
 
 ## Installation
