@@ -7,6 +7,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {LoadingService} from '../../services/loading.service';
+import {environment} from '../../../environments/environment';
 
 @Component({
     selector: 'app-tabs',
@@ -14,7 +15,8 @@ import {LoadingService} from '../../services/loading.service';
     styleUrls: ['tabs.page.scss']
 })
 export class TabsPage implements OnInit, OnDestroy {
-    webSocketEndPoint = 'http://27.71.228.53:9002/SmartClass/student-websocket';
+    webSocketEndPoint =  environment.rootURL + 'SmartClass/student-websocket';
+    // webSocketEndPoint = 'http://27.71.228.53:9002/SmartClass/student-websocket';
     topicURL = '/topic/newMonitor/';
     // topic = '/topic/newMonitor/B6';
     stompClient: any;
