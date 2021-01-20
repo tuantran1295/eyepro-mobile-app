@@ -107,17 +107,19 @@ export class TabsPage implements OnInit, OnDestroy {
         console.log(JSON.parse(message.body));
         const notiMessage = JSON.parse(message.body);
         this.showNotification(notiMessage);
-        this.updateStudentList(notiMessage.studentId);
+        this.updateStudentList(notiMessage);
+        console.log("ON NOTI IN OUT TIME: ");
+        console.log(this.timestampToHourMinuteSecond(notiMessage.inOutTime));
     }
 
 
-    updateStudentList(notiUserID) {
+    updateStudentList(notiMessage) {
         let i = 0;
         while (i < this.absenceList.length) {
             let currentStudent = this.absenceList[i];
-            if (currentStudent.studentId === notiUserID) {
+            if (currentStudent.studentId === notiMessage.studentId) {
                 this.absenceList.splice(i, 1);
-                currentStudent.timeInout = this.getCurrentTime();
+                currentStudent.timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
                 this.attendedList.push(currentStudent);
                 // @ts-ignore
                 this.attendanceService.attended.next(this.attendedList);
@@ -127,6 +129,14 @@ export class TabsPage implements OnInit, OnDestroy {
                 i++;
             }
         }
+    }
+
+    timestampToHourMinuteSecond(timestamp) {
+        const inOutDate = new Date(timestamp);
+        const hours = inOutDate.getHours();
+        const minutes = "0" + inOutDate.getMinutes();
+        const seconds = "0" + inOutDate.getSeconds();
+        return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
     }
 
     async presentAlertConfirm(msg: string) {
