@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  // rootURL: 'http://192.168.196.183:9003/',
   rootURL: 'http://10.0.0.183:9003/',
 };
 

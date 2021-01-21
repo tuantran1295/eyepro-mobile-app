@@ -74,6 +74,8 @@ export class TabsPage implements OnInit, OnDestroy {
 
     connectToNotificationSocket() {
         console.log('Initialize WebSocket Connection');
+        console.log('SOCKET ENDPOINT:');
+        console.log(this.webSocketEndPoint);
         const ws = new SockJS(this.webSocketEndPoint);
         this.stompClient = Stomp.over(ws);
 
@@ -108,8 +110,6 @@ export class TabsPage implements OnInit, OnDestroy {
         const notiMessage = JSON.parse(message.body);
         this.showNotification(notiMessage);
         this.updateStudentList(notiMessage);
-        console.log("ON NOTI IN OUT TIME: ");
-        console.log(this.timestampToHourMinuteSecond(notiMessage.inOutTime));
     }
 
 
