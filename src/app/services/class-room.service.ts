@@ -10,7 +10,7 @@ import {environment} from '../../environments/environment';
 const {Storage} = Plugins;
 
 export const CHOSEN_CLASSROOM_KEY = 'chosen-class-room';
-export const GET_CLASSROOM_URL = environment.rootURL + 'SmartClass/room/list/1?textSearch';
+
 
 // export const GET_CLASSROOM_URL = 'http://27.71.228.53:9002/SmartClass/room/list/1?textSearch';
 
@@ -18,6 +18,7 @@ export const GET_CLASSROOM_URL = environment.rootURL + 'SmartClass/room/list/1?t
     providedIn: 'root'
 })
 export class ClassRoomService {
+    getClassRoomURL =  environment.rootURL + 'SmartClass/room/list/1?textSearch';
     chosenClassRoom: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
     constructor(
@@ -26,7 +27,8 @@ export class ClassRoomService {
     }
 
     getClassList(): Observable<any> {
-        return this.http.get(GET_CLASSROOM_URL).pipe(
+        this.getClassRoomURL = environment.rootURL + 'SmartClass/room/list/1?textSearch';
+        return this.http.get(this.getClassRoomURL).pipe(
             map(data => data['data'])
         );
     }

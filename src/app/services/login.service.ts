@@ -8,7 +8,6 @@ import {environment} from '../../environments/environment';
 const {Storage} = Plugins;
 
 export const LOGIN_TOKEN_KEY = 'login-token';
-export const LOGIN_URL = environment.rootURL + 'SmartClass/auth/signin';
 
 // export const LOGIN_URL = 'http://27.71.228.53:9002/SmartClass/auth/signin';
 
@@ -16,6 +15,7 @@ export const LOGIN_URL = environment.rootURL + 'SmartClass/auth/signin';
     providedIn: 'root'
 })
 export class LoginService {
+    loginURL = environment.rootURL + 'SmartClass/auth/signin';
     isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
     loginToken = '';
 
@@ -36,7 +36,8 @@ export class LoginService {
 
     //: Observable<any>
     login(credentials: { username, password }): Observable<any> {
-        return this.http.post(LOGIN_URL, credentials).pipe(
+        this.loginURL = environment.rootURL + 'SmartClass/auth/signin';
+        return this.http.post(this.loginURL, credentials).pipe(
             map((data: any) => data.data.token),
             switchMap((token) => {
                 console.log('LOGIN TOKEN: ');

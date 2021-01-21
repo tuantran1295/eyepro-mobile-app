@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {HttpHeaders} from '@angular/common/http';
 import {Plugins} from '@capacitor/core';
 import {ClassRoomService} from '../../services/class-room.service';
+import {environment} from '../../../environments/environment';
 
 const {Storage} = Plugins;
 
@@ -16,6 +17,16 @@ const {Storage} = Plugins;
 })
 export class LoginPage implements OnInit {
     credentials: FormGroup;
+
+    serverList = [
+        'http://10.0.0.183:9003/',
+        'http://192.168.196.183:9003/',
+        'http://27.71.228.53:9002/',
+        'http://27.71.228.53:9003/',
+        'http://10.0.0.180:9003/',
+        'http://192.168.196.180:9003/'
+    ];
+    selectedServer = this.serverList[0];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -28,6 +39,7 @@ export class LoginPage implements OnInit {
     }
 
     ngOnInit() {
+        this.setEnvironmentServer();
         this.autoLogin();
         this.credentials = this.formBuilder.group({
             // userName: ['view_301', [Validators.required, Validators.minLength(3)]],
@@ -37,6 +49,10 @@ export class LoginPage implements OnInit {
             userName: ['vdsmart', [Validators.required, Validators.minLength(3)]],
             password: ['Vdsmart321', [Validators.required, Validators.minLength(5)]]
         });
+    }
+
+    setEnvironmentServer() {
+        environment.rootURL = this.selectedServer;
     }
 
     autoLogin() {
@@ -50,7 +66,7 @@ export class LoginPage implements OnInit {
     async login() {
         const loading = await this.loadingController.create();
         await loading.present();
-
+        this.setEnvironmentServer();
         this.loginService.login(this.credentials.value).subscribe(
             async (res) => {
                 await loading.dismiss();

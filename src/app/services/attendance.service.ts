@@ -5,7 +5,6 @@ import {catchError, filter, map, switchMap, tap} from 'rxjs/operators';
 import {ClassRoomService} from './class-room.service';
 import {environment} from '../../environments/environment';
 
-const ATTENDANCE_API_URL = environment.rootURL + 'SmartClass/student/timekeeping-room/roomId/';
 
 // const ATTENDANCE_API_URL = 'http://27.71.228.53:9002/SmartClass/student/timekeeping-room/roomId/';
 
@@ -14,6 +13,8 @@ const ATTENDANCE_API_URL = environment.rootURL + 'SmartClass/student/timekeeping
     providedIn: 'root'
 })
 export class AttendanceService implements OnInit {
+    attendanceURL = environment.rootURL + 'SmartClass/student/timekeeping-room/roomId/';
+
     attended: BehaviorSubject<[]> = new BehaviorSubject<[]>(null);
     absence: BehaviorSubject<[]> = new BehaviorSubject<[]>(null);
     left: BehaviorSubject<[]> = new BehaviorSubject<[]>(null);
@@ -29,7 +30,8 @@ export class AttendanceService implements OnInit {
     }
 
     async getClassAttendance(className) {
-        const url = ATTENDANCE_API_URL + className;
+        this.attendanceURL = environment.rootURL + 'SmartClass/student/timekeeping-room/roomId/';
+        const url = this.attendanceURL + className;
         console.log()
         const students = await this.http.get(url).toPromise();
         if (students) {
