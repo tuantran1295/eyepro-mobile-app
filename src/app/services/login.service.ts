@@ -15,7 +15,7 @@ export const LOGIN_TOKEN_KEY = 'login-token';
     providedIn: 'root'
 })
 export class LoginService {
-    loginURL = environment.rootURL + 'SmartClass/auth/signin';
+    loginURL = environment.rootURL + 'auth/signin';
     isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
     loginToken = '';
 
@@ -36,7 +36,7 @@ export class LoginService {
 
     //: Observable<any>
     login(credentials: { username, password }): Observable<any> {
-        this.loginURL = environment.rootURL + 'SmartClass/auth/signin';
+        this.loginURL = environment.rootURL + 'auth/signin';
         return this.http.post(this.loginURL, credentials).pipe(
             map((data: any) => data.data.token),
             switchMap((token) => {

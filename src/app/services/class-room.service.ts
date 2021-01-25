@@ -18,7 +18,7 @@ export const CHOSEN_CLASSROOM_KEY = 'chosen-class-room';
     providedIn: 'root'
 })
 export class ClassRoomService {
-    getClassRoomURL =  environment.rootURL + 'SmartClass/room/list/1?textSearch';
+    getClassRoomURL =  environment.rootURL + 'room/list/1?textSearch';
     chosenClassRoom: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
     constructor(
@@ -27,7 +27,7 @@ export class ClassRoomService {
     }
 
     getClassList(): Observable<any> {
-        this.getClassRoomURL = environment.rootURL + 'SmartClass/room/list/1?textSearch';
+        this.getClassRoomURL = environment.rootURL + 'room/list/1?textSearch';
         return this.http.get(this.getClassRoomURL).pipe(
             map(data => data['data'])
         );

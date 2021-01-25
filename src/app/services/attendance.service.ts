@@ -13,7 +13,7 @@ import {environment} from '../../environments/environment';
     providedIn: 'root'
 })
 export class AttendanceService implements OnInit {
-    attendanceURL = environment.rootURL + 'SmartClass/student/timekeeping-room/roomId/';
+    attendanceURL = environment.rootURL + 'student/timekeeping-room/roomId/';
 
     attended: BehaviorSubject<[]> = new BehaviorSubject<[]>(null);
     absence: BehaviorSubject<[]> = new BehaviorSubject<[]>(null);
@@ -30,7 +30,7 @@ export class AttendanceService implements OnInit {
     }
 
     async getClassAttendance(className) {
-        this.attendanceURL = environment.rootURL + 'SmartClass/student/timekeeping-room/roomId/';
+        this.attendanceURL = environment.rootURL + 'student/timekeeping-room/roomId/';
         const url = this.attendanceURL + className;
         console.log()
         const students = await this.http.get(url).toPromise();

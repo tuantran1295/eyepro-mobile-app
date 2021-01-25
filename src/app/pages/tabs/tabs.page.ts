@@ -15,7 +15,7 @@ import {environment} from '../../../environments/environment';
     styleUrls: ['tabs.page.scss']
 })
 export class TabsPage implements OnInit, OnDestroy {
-    webSocketEndPoint =  environment.rootURL + 'SmartClass/student-websocket';
+    webSocketEndPoint =  environment.rootURL + 'student-websocket';
     // webSocketEndPoint = 'http://27.71.228.53:9002/SmartClass/student-websocket';
     topicURL = '/topic/newMonitor/';
     // topic = '/topic/newMonitor/B6';
@@ -165,7 +165,8 @@ export class TabsPage implements OnInit, OnDestroy {
             sound:  this.platform.is('android') ? 'file://assets/sound/quite-impressed-565.mp3' : 'file://assets/sound/slow-spring-board-570.m4r',
             vibrate: true,
             title: 'Thông Báo Điểm Danh',
-            text: `Học viên ${message.name} đã có mặt tại lớp ${message.roomId} Học viện chính trị Quốc gia HCM Khu vực 1 vào lúc ${this.getCurrentTime()}`
+            text: `Học viên ${message.name} đã có mặt tại lớp ${message.roomId} vào lúc ${this.getCurrentTime()}`,
+            attachments: [`${message.image_path_temp}`]
         });
     }
 
