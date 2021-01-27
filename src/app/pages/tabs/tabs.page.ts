@@ -162,7 +162,7 @@ export class TabsPage implements OnInit, OnDestroy {
         console.log(message.image_path_temp);
         this.localNotification.requestPermission().then(() => {
             // @ts-ignore
-            const uri = 'https://www.strictlyeducation4s.co.uk/strictly_education4s/AdobeStock_303989091.jpeg';
+            // const uri = 'https://www.strictlyeducation4s.co.uk/strictly_education4s/AdobeStock_303989091.jpeg';
             this.localNotification.schedule({
                 id: 1,
                 // sound: this.setSound(),
@@ -170,7 +170,7 @@ export class TabsPage implements OnInit, OnDestroy {
                 vibrate: true,
                 title: 'Thông Báo Điểm Danh',
                 text: `Học viên ${message.name} đã có mặt tại lớp ${message.roomId} vào lúc ${this.getCurrentTime()}`,
-                attachments: [uri]
+                // attachments: [uri]
             });
         });
     }
