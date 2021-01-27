@@ -158,15 +158,20 @@ export class TabsPage implements OnInit, OnDestroy {
 
 
     showNotification(message) {
-        // @ts-ignore
-        this.localNotification.schedule({
-            id: 1,
-            // sound: this.setSound(),
-            sound:  this.platform.is('android') ? 'file://assets/sound/quite-impressed-565.mp3' : 'file://assets/sound/slow-spring-board-570.m4r',
-            vibrate: true,
-            title: 'Thông Báo Điểm Danh',
-            text: `Học viên ${message.name} đã có mặt tại lớp ${message.roomId} vào lúc ${this.getCurrentTime()}`,
-            attachments: [`${message.image_path_temp}`]
+        console.log("showNotification IMAGE: ");
+        console.log(message.image_path_temp);
+        this.localNotification.requestPermission().then(() => {
+            // @ts-ignore
+            const uri = 'https://www.strictlyeducation4s.co.uk/strictly_education4s/AdobeStock_303989091.jpeg';
+            this.localNotification.schedule({
+                id: 1,
+                // sound: this.setSound(),
+                sound:  this.platform.is('android') ? 'file://assets/sound/quite-impressed-565.mp3' : 'file://assets/sound/slow-spring-board-570.m4r',
+                vibrate: true,
+                title: 'Thông Báo Điểm Danh',
+                text: `Học viên ${message.name} đã có mặt tại lớp ${message.roomId} vào lúc ${this.getCurrentTime()}`,
+                attachments: [uri]
+            });
         });
     }
 
