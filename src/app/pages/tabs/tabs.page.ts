@@ -82,7 +82,7 @@ export class TabsPage implements OnInit, OnDestroy {
         // if currentStudent timeInout is past 5 minute from now, move to absence list.
         this.updateTimer = setInterval(() => {
             this.updateStudentStatus();
-        }, 300000); //300000
+        }, 60000); //300000
     }
 
     updateStudentStatus() {
@@ -156,13 +156,16 @@ export class TabsPage implements OnInit, OnDestroy {
 
     updateFullStudentLists(notiMessage) {
         let attendedOne = null;
+        let isUpdatingOnly = true;
 
         let i = 0;
         while (i < this.absenceList.length) {
             let currentStudent = this.absenceList[i];
             if (currentStudent.studentId === notiMessage.studentId) {
+                isUpdatingOnly = false;
                 attendedOne = this.absenceList.splice(i, 1);
                 // update check-in time
+                attendedOne.realtimeImage = notiMessage.image_path_temp;
                 attendedOne.timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
                 // lay thoi gian hien tai tru di timeInout neu ket qua lon hon 5 phut, chuyen ve vang mat.
                 // @ts-ignore
@@ -172,13 +175,21 @@ export class TabsPage implements OnInit, OnDestroy {
             }
         }
 
-        for (let j = 0; j < this.attendedList.length; j++) {
-            if (this.attendedList[j].studentId === notiMessage.studentId) {
-
-                this.attendedList[j].timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
-                // @ts-ignore
-                this.attendanceService.attended.next(this.attendedList);
+        // neu attendedList co student dang diem danh roi thi cap nhat thong tin image va timeInout
+        // neu chua co, push them attendedOne
+        if (isUpdatingOnly) {
+            for (let j = 0; j < this.attendedList.length; j++) {
+                if (this.attendedList[j].studentId === notiMessage.studentId) {
+                    this.attendedList[j].realtimeImage = notiMessage.image_path_temp;
+                    this.attendedList[j].timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
+                    // @ts-ignore
+                    this.attendanceService.attended.next(this.attendedList);
+                }
             }
+        } else {
+            this.attendedList.push(attendedOne);
+            // @ts-ignore
+            this.attendanceService.attended.next(this.attendedList);
         }
     }
 
