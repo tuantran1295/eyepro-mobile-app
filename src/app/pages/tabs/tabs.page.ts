@@ -36,12 +36,12 @@ export class TabsPage implements OnInit, OnDestroy {
     ) {
     }
 
-    ngOnInit(): void {
+     async ngOnInit() {
         this.topicURL = '/topic/newMonitor/';
 
         console.log('TAB PAGE INIT!!!!');
         this.classRoomService.loadChosenClassRoom().then(() => {
-            this.classRoomService.chosenClassRoom.subscribe((className) => {
+            this.classRoomService.chosenClassRoom.subscribe( async (className) => {
                 console.log('TAB PAGE CLASS NAME: ');
                 console.log(className);
                 if (className) {
@@ -59,7 +59,9 @@ export class TabsPage implements OnInit, OnDestroy {
                         this.absenceList = students;
                     });
 
-                    const isDataExist = this.attendanceService.getClassAttendance(className);
+                    const isDataExist =  await this.attendanceService.getClassAttendance(className);
+                    console.log("IS DATA EXIST: ");
+                    console.log(isDataExist);
                     if (isDataExist) {
                         this.connectToNotificationSocket();
                     } else {
@@ -109,7 +111,36 @@ export class TabsPage implements OnInit, OnDestroy {
         console.log(JSON.parse(message.body));
         const notiMessage = JSON.parse(message.body);
         this.showNotification(notiMessage);
-        this.updateStudentList(notiMessage);
+        this.updateFullStudentLists(notiMessage);
+        // this.updateStudentList(notiMessage);
+    }
+
+    updateFullStudentLists(notiMessage) {
+        let attendedOne = null;
+
+        let i = 0;
+        while (i < this.absenceList.length) {
+            let currentStudent = this.absenceList[i];
+            if (currentStudent.studentId === notiMessage.studentId) {
+                attendedOne = this.absenceList.splice(i, 1);
+                // update check-in time
+                attendedOne.timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
+                // lay thoi gian hien tai tru di timeInout neu ket qua lon hon 5 phut, chuyen ve vang mat.
+                // @ts-ignore
+                this.attendanceService.absence.next(this.absenceList);
+            } else {
+                i++;
+            }
+        }
+
+        for (let j = 0; j < this.attendedList.length; j++) {
+            if (this.attendedList[j].studentId === notiMessage.studentId) {
+
+                this.attendedList[j].timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
+                // @ts-ignore
+                this.attendanceService.attended.next(this.attendedList);
+            }
+        }
     }
 
 

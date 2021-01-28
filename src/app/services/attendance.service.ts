@@ -40,7 +40,9 @@ export class AttendanceService implements OnInit {
             const studentList: [] = students['data'];
             console.log("AttendanceService ATTENDED LIST:");
             console.log(studentList);
-            if (Array.isArray(studentList) && studentList.length > 0) {
+            console.log(studentList !== null)
+
+            if (studentList !== null) {
                 const attendedStudent = studentList.filter(student => student['monitorState'] === 1);
                 console.log("AttendanceService getClassAttendance:")
                 console.log(attendedStudent);
@@ -63,7 +65,7 @@ export class AttendanceService implements OnInit {
                 this.areaName.next(schoolName);
                 return true;
             } else { // khong co ca hoc, show thong bao khong co ca hoc src/app/pages/tabs/tabs.page.ts
-                return null;
+                return false;
             }
         }
     }
