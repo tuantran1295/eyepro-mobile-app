@@ -163,7 +163,7 @@ export class TabsPage implements OnInit, OnDestroy {
             let currentStudent = this.absenceList[i];
             if (currentStudent.studentId === notiMessage.studentId) {
                 isUpdatingOnly = false;
-                attendedOne = this.absenceList.splice(i, 1);
+                attendedOne = this.absenceList.splice(i, 1)[0];
                 // update check-in time
                 attendedOne.realtimeImage = notiMessage.image_path_temp;
                 attendedOne.timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
