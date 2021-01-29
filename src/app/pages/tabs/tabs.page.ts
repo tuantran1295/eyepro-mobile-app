@@ -82,7 +82,7 @@ export class TabsPage implements OnInit, OnDestroy {
         // if currentStudent timeInout is past 5 minute from now, move to absence list.
         this.updateTimer = setInterval(() => {
             this.updateStudentStatus();
-        }, 60000); //300000
+        }, 30000); //300000
     }
 
     updateStudentStatus() {
@@ -162,14 +162,18 @@ export class TabsPage implements OnInit, OnDestroy {
         while (i < this.absenceList.length) {
             let currentStudent = this.absenceList[i];
             if (currentStudent.studentId === notiMessage.studentId) {
-                isUpdatingOnly = false;
+                isUpdatingOnly = false; // student hien tai co trong danh sach absence
                 attendedOne = this.absenceList.splice(i, 1)[0];
                 // update check-in time
                 attendedOne.realtimeImage = notiMessage.image_path_temp;
                 attendedOne.timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
+
+                this.attendedList.push(attendedOne);
                 // lay thoi gian hien tai tru di timeInout neu ket qua lon hon 5 phut, chuyen ve vang mat.
                 // @ts-ignore
                 this.attendanceService.absence.next(this.absenceList);
+                // @ts-ignore
+                this.attendanceService.attended.next(this.attendedList);
             } else {
                 i++;
             }
@@ -186,10 +190,6 @@ export class TabsPage implements OnInit, OnDestroy {
                     this.attendanceService.attended.next(this.attendedList);
                 }
             }
-        } else {
-            this.attendedList.push(attendedOne);
-            // @ts-ignore
-            this.attendanceService.attended.next(this.attendedList);
         }
     }
 
