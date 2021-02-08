@@ -38,7 +38,7 @@ export class LoginService {
     login(credentials: { username, password }): Observable<any> {
         this.loginURL = environment.rootURL + 'auth/signin';
         return this.http.post(this.loginURL, credentials).pipe(
-            map((data: any) => data.data.token),
+            map((data: any) => data.data.userName),
             switchMap((token) => {
                 console.log('LOGIN TOKEN: ');
                 console.log(token);

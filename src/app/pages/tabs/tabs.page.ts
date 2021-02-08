@@ -8,6 +8,7 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {LoadingService} from '../../services/loading.service';
 import {environment} from '../../../environments/environment';
+import {LoginService} from '../../services/login.service';
 
 @Component({
     selector: 'app-tabs',
@@ -25,6 +26,7 @@ export class TabsPage implements OnInit, OnDestroy {
     absenceList = [];
 
     updateTimer;
+    isAdmin = false;
 
     constructor(
         public alertController: AlertController,
@@ -35,6 +37,7 @@ export class TabsPage implements OnInit, OnDestroy {
         private localNotification: LocalNotifications,
         private platform: Platform,
         private loadingService: LoadingService,
+        private loginService: LoginService,
     ) {
     }
 
@@ -65,6 +68,7 @@ export class TabsPage implements OnInit, OnDestroy {
                     console.log('IS DATA EXIST: ');
                     console.log(isDataExist);
                     if (isDataExist) {
+                        this.checkUserRole(className);
                         this.connectToNotificationSocket();
                         this.setUpdateTimer(); // update student attendance status every 5 minutes
                     } else {
@@ -143,13 +147,29 @@ export class TabsPage implements OnInit, OnDestroy {
         }, 5000);
     }
 
+    checkUserRole(chosenClassRoom) {
+        console.log("CHECK USER ROLE LOGIN TOKEN::::: ");
+        console.log(this.loginService.loginToken);
+        const loginUserName = this.loginService.loginToken;
+        console.log(loginUserName.toUpperCase() === chosenClassRoom);
+        if (loginUserName === 'admin' || loginUserName.toUpperCase() === chosenClassRoom) {
+            this.isAdmin = true;
+        }
+    }
+
     onNotiMessageReceived(message) {
         this.loadingService.dismissLoading();
         console.log('Message Received from Server :: ' + message);
         console.log('NOTIFICATION MESSAGE: ');
         console.log(JSON.parse(message.body));
         const notiMessage = JSON.parse(message.body);
-        this.showNotification(notiMessage);
+        // this.isAdmin is set in checkUserRole(chosenClassRoom)
+        console.log("IS ADMIN:" + this.isAdmin);
+        // *MARK: SHOW NOTIFICATION FOR ADMIN ONLY
+        if (this.isAdmin) {
+            this.showNotification(notiMessage);
+        }
+
         this.updateFullStudentLists(notiMessage);
         // this.updateStudentList(notiMessage);
     }
