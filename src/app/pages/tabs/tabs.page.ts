@@ -27,6 +27,7 @@ export class TabsPage implements OnInit, OnDestroy {
 
     updateTimer;
     isAdmin = false;
+    loginUserName = null;
 
     constructor(
         public alertController: AlertController,
@@ -150,9 +151,9 @@ export class TabsPage implements OnInit, OnDestroy {
     checkUserRole(chosenClassRoom) {
         console.log("CHECK USER ROLE LOGIN TOKEN::::: ");
         console.log(this.loginService.loginToken);
-        const loginUserName = this.loginService.loginToken;
-        console.log(loginUserName.toUpperCase() === chosenClassRoom);
-        if (loginUserName === 'admin' || loginUserName.toUpperCase() === chosenClassRoom) {
+        this.loginUserName = this.loginService.loginToken;
+        console.log(this.loginUserName.toUpperCase() === chosenClassRoom);
+        if (this.loginUserName === 'admin' || this.loginUserName.toUpperCase() === chosenClassRoom) {
             this.isAdmin = true;
         }
     }
@@ -165,13 +166,24 @@ export class TabsPage implements OnInit, OnDestroy {
         const notiMessage = JSON.parse(message.body);
         // this.isAdmin is set in checkUserRole(chosenClassRoom)
         console.log("IS ADMIN:" + this.isAdmin);
-        // *MARK: SHOW NOTIFICATION FOR ADMIN ONLY
-        if (this.isAdmin) {
-            this.showNotification(notiMessage);
-        }
+
+        // *MARK: SHOW ALL NOTIFICATION TO ADMIN ONLY
+        // Normal account only display his own notification
+        this.filteredDisplayNotification(message);
 
         this.updateFullStudentLists(notiMessage);
         // this.updateStudentList(notiMessage);
+    }
+
+    filteredDisplayNotification(notiMessage) {
+        if (this.isAdmin) {
+            this.showNotification(notiMessage);
+        } else { // ACCOUNT CO DANG 001_hung 005_hoa
+            const loginUserID = this.loginUserName.split("_")[0];
+            if (loginUserID && loginUserID === notiMessage.studentId) {
+                this.showNotification(notiMessage);
+            }
+        }
     }
 
     updateFullStudentLists(notiMessage) {
