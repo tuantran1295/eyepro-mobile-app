@@ -163,13 +163,14 @@ export class TabsPage implements OnInit, OnDestroy {
         console.log('Message Received from Server :: ' + message);
         console.log('NOTIFICATION MESSAGE: ');
         console.log(JSON.parse(message.body));
+
         const notiMessage = JSON.parse(message.body);
         // this.isAdmin is set in checkUserRole(chosenClassRoom)
         console.log("IS ADMIN:" + this.isAdmin);
 
         // *MARK: SHOW ALL NOTIFICATION TO ADMIN ONLY
         // Normal account only display his own notification
-        this.filteredDisplayNotification(message);
+        this.filteredDisplayNotification(notiMessage);
 
         this.updateFullStudentLists(notiMessage);
         // this.updateStudentList(notiMessage);
@@ -180,6 +181,9 @@ export class TabsPage implements OnInit, OnDestroy {
             this.showNotification(notiMessage);
         } else { // ACCOUNT CO DANG 001_hung 005_hoa
             const loginUserID = this.loginUserName.split("_")[0];
+            console.log("loginUserID: " + loginUserID);
+            console.log(notiMessage.studentId);
+            console.log(loginUserID === notiMessage.studentId);
             if (loginUserID && loginUserID === notiMessage.studentId) {
                 this.showNotification(notiMessage);
             }
