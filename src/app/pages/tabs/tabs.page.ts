@@ -18,7 +18,8 @@ import {LoginService} from '../../services/login.service';
 export class TabsPage implements OnInit, OnDestroy {
     webSocketEndPoint = environment.rootURL + 'student-websocket';
     // webSocketEndPoint = 'http://27.71.228.53:9002/SmartClass/student-websocket';
-    topicURL = '/topic/newMonitor/';
+    BASE_TOPIC_URL = '/topic/newMonitor/';
+    topicURL = '';
     // topic = '/topic/newMonitor/B6';
     stompClient: any;
 
@@ -51,7 +52,7 @@ export class TabsPage implements OnInit, OnDestroy {
                 console.log('TAB PAGE CLASS NAME: ');
                 console.log(className);
                 if (className) {
-                    this.topicURL = this.topicURL + className;
+                    this.topicURL = this.BASE_TOPIC_URL + className;
 
                     console.log('TAB PAGE CHOSEN CLASS ROOM: ');
                     console.log(className);
@@ -149,13 +150,19 @@ export class TabsPage implements OnInit, OnDestroy {
     }
 
     checkUserRole(chosenClassRoom) {
-        console.log("CHECK USER ROLE LOGIN TOKEN::::: ");
+        console.log('CHECK USER ROLE LOGIN TOKEN::::: ');
         console.log(this.loginService.loginToken);
         this.loginUserName = this.loginService.loginToken; // thuoc tinh loginToken duoc dung de luu username dang nhap
         console.log(this.loginUserName.toUpperCase() === chosenClassRoom);
-        if (this.loginUserName === 'admin' || this.loginUserName.toUpperCase() === chosenClassRoom) {
+        if (this.loginUserName === 'admin' || this.loginUserName.toUpperCase() === chosenClassRoom
+            || this.isClassAccount(this.loginUserName)) {
             this.isAdmin = true;
         }
+    }
+
+    isClassAccount(username) { // Account nhan notification tu ca lop
+        const classRegex = new RegExp('^P[0-9][0-9][0-9]$'); // account lop co dang P101 P102 PXXX
+        return classRegex.test(username);
     }
 
     onNotiMessageReceived(message) {
@@ -166,7 +173,7 @@ export class TabsPage implements OnInit, OnDestroy {
 
         const notiMessage = JSON.parse(message.body);
         // this.isAdmin is set in checkUserRole(chosenClassRoom)
-        console.log("IS ADMIN:" + this.isAdmin);
+        console.log('IS ADMIN:' + this.isAdmin);
 
         // *MARK: SHOW ALL NOTIFICATION TO ADMIN ONLY
         // Normal account only display his own notification
@@ -180,8 +187,8 @@ export class TabsPage implements OnInit, OnDestroy {
         if (this.isAdmin) {
             this.showNotification(notiMessage);
         } else { // ACCOUNT CO DANG 001_hung 005_hoa
-            const loginUserID = this.loginUserName.split("_")[0];
-            console.log("loginUserID: " + loginUserID);
+            const loginUserID = this.loginUserName.split('_')[0];
+            console.log('loginUserID: ' + loginUserID);
             console.log(notiMessage.studentId);
             console.log(loginUserID === notiMessage.studentId);
             if (loginUserID && loginUserID === notiMessage.studentId) {
