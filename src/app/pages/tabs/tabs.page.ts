@@ -151,7 +151,7 @@ export class TabsPage implements OnInit, OnDestroy {
     checkUserRole(chosenClassRoom) {
         console.log("CHECK USER ROLE LOGIN TOKEN::::: ");
         console.log(this.loginService.loginToken);
-        this.loginUserName = this.loginService.loginToken;
+        this.loginUserName = this.loginService.loginToken; // thuoc tinh loginToken duoc dung de luu username dang nhap
         console.log(this.loginUserName.toUpperCase() === chosenClassRoom);
         if (this.loginUserName === 'admin' || this.loginUserName.toUpperCase() === chosenClassRoom) {
             this.isAdmin = true;
