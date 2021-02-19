@@ -4,6 +4,7 @@
 *~
 *.sw[mnpcod]
 .tmp
+.gitignore
 *.tmp
 *.tmp.*
 *.sublime-project
@@ -23,9 +24,12 @@ npm-debug.log*
 /.sourcemaps
 /.versions
 /.vscode
+/.gradle
 /coverage
 /dist
 /node_modules
 /platforms
 /plugins
 /www
+/android
+/ios

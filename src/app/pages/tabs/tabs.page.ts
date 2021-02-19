@@ -29,6 +29,7 @@ export class TabsPage implements OnInit, OnDestroy {
     updateTimer;
     isAdmin = false;
     loginUserName = null;
+    loginUserID = null;
 
     constructor(
         public alertController: AlertController,
@@ -123,15 +124,18 @@ export class TabsPage implements OnInit, OnDestroy {
         console.log('Initialize WebSocket Connection');
         console.log('SOCKET ENDPOINT:');
         console.log(this.webSocketEndPoint);
-        const ws = new SockJS(this.webSocketEndPoint);
-        this.stompClient = Stomp.over(ws);
+        if (!this.stompClient) {
+            const ws = new SockJS(this.webSocketEndPoint);
+            this.stompClient = Stomp.over(ws);
 
-        this.stompClient.connect({}, (frame) => {
-            this.stompClient.subscribe(this.topicURL, (sdkEvent) => {
-                this.onNotiMessageReceived(sdkEvent);
-            });
-            // _this.stompClient.reconnect_delay = 2000;
-        }, this.errorCallBack);
+            this.stompClient.connect({}, (frame) => {
+                this.stompClient.subscribe(this.topicURL, (sdkEvent) => {
+                    this.onNotiMessageReceived(sdkEvent);
+                });
+                // _this.stompClient.reconnect_delay = 2000;
+            }, this.errorCallBack);
+        }
+
     }
 
     disconnectNotificationSocket() {
@@ -154,9 +158,13 @@ export class TabsPage implements OnInit, OnDestroy {
         console.log(this.loginService.loginToken);
         this.loginUserName = this.loginService.loginToken; // thuoc tinh loginToken duoc dung de luu username dang nhap
         console.log(this.loginUserName.toUpperCase() === chosenClassRoom);
+        // Account admin co dang admin, ten lop, ten phong vd: P101 P102 P103
         if (this.loginUserName === 'admin' || this.loginUserName.toUpperCase() === chosenClassRoom
             || this.isClassAccount(this.loginUserName)) {
             this.isAdmin = true;
+        } else { // Account nguoi dung co dang 20211002_hoa 20211000_hung
+            console.log("checkUserRole login ID:" + this.loginUserName.split('_')[0]);
+            this.loginUserID = this.loginUserName.split('_')[0];
         }
     }
 
@@ -187,11 +195,11 @@ export class TabsPage implements OnInit, OnDestroy {
         if (this.isAdmin) {
             this.showNotification(notiMessage);
         } else { // ACCOUNT CO DANG 001_hung 005_hoa
-            const loginUserID = this.loginUserName.split('_')[0];
-            console.log('loginUserID: ' + loginUserID);
+            //  this.loginUserID duoc get o ham checkUserRole
+            console.log('loginUserID: ' + this.loginUserID);
             console.log(notiMessage.studentId);
-            console.log(loginUserID === notiMessage.studentId);
-            if (loginUserID && loginUserID === notiMessage.studentId) {
+            console.log(this.loginUserID === notiMessage.studentId);
+            if (this.loginUserID && (this.loginUserID === notiMessage.studentId)) {
                 this.showNotification(notiMessage);
             }
         }
