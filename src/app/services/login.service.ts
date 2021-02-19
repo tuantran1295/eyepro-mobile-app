@@ -17,7 +17,6 @@ export const LOGIN_TOKEN_KEY = 'login-token';
 export class LoginService {
     loginURL = environment.rootURL + 'auth/signin';
     isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-    loginToken = '';
 
     constructor(private http: HttpClient) {
         this.loadLoginToken();
@@ -26,8 +25,8 @@ export class LoginService {
     async loadLoginToken() {
         const token = await Storage.get({key: LOGIN_TOKEN_KEY});
         if (token && token.value) {
+            console.log("LOGIN SERVICE INIT: -----")
             console.log('Login Token: ', token.value);
-            this.loginToken = token.value;
             this.isAuthenticated.next(true);
         } else {
             this.isAuthenticated.next(false);

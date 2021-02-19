@@ -38,8 +38,8 @@ export class TabLiveCameraPage implements OnInit {
         this.classRoomService.chosenClassRoom.subscribe((className) => {
 
             if (className) {
-                console.log('Chosen CLASS NAME: ');
-                console.log(className);
+                // console.log('Chosen CLASS NAME: ');
+                // console.log(className);
                 this.getSchoolName();
                 this.getCurrentClassName(className);
                 this.getTotalStudent();
@@ -53,8 +53,8 @@ export class TabLiveCameraPage implements OnInit {
 
     getSchoolName() {
         this.attendanceService.areaName.subscribe(schoolName => {
-            console.log('LIVE CAMERA AREA NAME: ');
-            console.log(schoolName);
+            // console.log('LIVE CAMERA AREA NAME: ');
+            // console.log(schoolName);
             if (schoolName) {
                 this.schoolName = schoolName;
             }
@@ -75,11 +75,11 @@ export class TabLiveCameraPage implements OnInit {
 
     getAttendedNumber() {
         this.attendanceService.attended.subscribe(students => {
-            console.log('ATTENDED LENGTH: ');
-            console.log(students);
+            // console.log('ATTENDED LENGTH: ');
+            // console.log(students);
 
             if (students) {
-                console.log(students.length);
+                // console.log(students.length);
                 this.attendedNumber = students.length;
             }
 
@@ -88,11 +88,11 @@ export class TabLiveCameraPage implements OnInit {
 
     getAbsenceNumber() {
         this.attendanceService.absence.subscribe((students) => {
-            console.log('ABSENCE LENGTH: ');
-            console.log(students);
+            // console.log('ABSENCE LENGTH: ');
+            // console.log(students);
 
             if (students) {
-                console.log(students.length);
+                // console.log(students.length);
                 this.absenceNumber = students.length;
             }
 
@@ -101,12 +101,12 @@ export class TabLiveCameraPage implements OnInit {
 
     getLeftNumber() {
         this.attendanceService.left.subscribe((students) => {
-            console.log('LEFT LENGTH: ');
-            console.log(students);
+            // console.log('LEFT LENGTH: ');
+            // console.log(students);
 
             this.loadingService.dismissLoading();
             if (students) {
-                console.log(students.length);
+                // console.log(students.length);
                 this.leftNumber = students.length;
             }
         });

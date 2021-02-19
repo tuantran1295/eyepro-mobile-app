@@ -8,7 +8,10 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {LoadingService} from '../../services/loading.service';
 import {environment} from '../../../environments/environment';
-import {LoginService} from '../../services/login.service';
+import {LOGIN_TOKEN_KEY, LoginService} from '../../services/login.service';
+import {Plugins} from '@capacitor/core';
+
+const {Storage} = Plugins;
 
 @Component({
     selector: 'app-tabs',
@@ -94,8 +97,8 @@ export class TabsPage implements OnInit, OnDestroy {
 
     updateStudentStatus() {
         for (let i = 0; i < this.attendedList.length; i++) {
-            console.log('ATTENDANCE TIME: ' + i);
-            console.log(this.attendedList[i].timeInout); // hh:mm:ss
+            // console.log('ATTENDANCE TIME: ' + i);
+            // console.log(this.attendedList[i].timeInout); // hh:mm:ss
 
             const rawInOutTime = this.attendedList[i].timeInout.split(':');
             const inOutDate = new Date();
@@ -105,7 +108,6 @@ export class TabsPage implements OnInit, OnDestroy {
             // @ts-ignore
             const diffMs = (currentDate - inOutDate); // in milliseconds
             const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-            console.log('DIFF MIN: ' + diffMins);
 
             if (diffMins >= 5) { //5
                 const absencedOne = this.attendedList.splice(i, 1);
@@ -153,19 +155,24 @@ export class TabsPage implements OnInit, OnDestroy {
         }, 5000);
     }
 
-    checkUserRole(chosenClassRoom) {
-        console.log('CHECK USER ROLE LOGIN TOKEN::::: ');
-        console.log(this.loginService.loginToken);
-        this.loginUserName = this.loginService.loginToken; // thuoc tinh loginToken duoc dung de luu username dang nhap
-        console.log(this.loginUserName.toUpperCase() === chosenClassRoom);
-        // Account admin co dang admin, ten lop, ten phong vd: P101 P102 P103
-        if (this.loginUserName === 'admin' || this.loginUserName.toUpperCase() === chosenClassRoom
-            || this.isClassAccount(this.loginUserName)) {
-            this.isAdmin = true;
-        } else { // Account nguoi dung co dang 20211002_hoa 20211000_hung
-            console.log("checkUserRole login ID:" + this.loginUserName.split('_')[0]);
-            this.loginUserID = this.loginUserName.split('_')[0];
+    async checkUserRole(chosenClassRoom) {
+        const token = await Storage.get({key: LOGIN_TOKEN_KEY}); // thuoc tinh loginToken duoc dung de luu username dang nhap
+        if (token && token.value) {
+            console.log('CHECK USER ROLE LOGIN TOKEN::::: ');
+            console.log(token.value);
+            this.loginUserName = token.value;
+            console.log(this.loginUserName.toUpperCase() === chosenClassRoom);
+            // Account admin co dang admin, ten lop, ten phong vd: P101 P102 P103
+            if (this.loginUserName === 'admin' || this.loginUserName === 'vdsmart'
+                || this.loginUserName.toUpperCase() === chosenClassRoom
+                || this.isClassAccount(this.loginUserName)) {
+                this.isAdmin = true;
+            } else { // Account nguoi dung co dang 20211002_hoa 20211000_hung
+                console.log("checkUserRole login ID:" + this.loginUserName.split('_')[0]);
+                this.loginUserID = this.loginUserName.split('_')[0];
+            }
         }
+
     }
 
     isClassAccount(username) { // Account nhan notification tu ca lop
