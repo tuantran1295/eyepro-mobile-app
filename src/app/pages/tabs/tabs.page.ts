@@ -340,7 +340,7 @@ export class TabsPage implements OnInit, OnDestroy {
             this.localNotification.schedule({
                 id: 1,
                 // sound: this.setSound(),
-                sound: this.platform.is('android') ? 'file://assets/sound/quite-impressed-565.mp3' : 'file://assets/sound/slow-spring-board-570.m4r',
+                sound: this.platform.is('android') ? 'file://resources/android/sound/quite-impressed-565.mp3' : 'resources/ios/sound/slow-spring-board-570.m4r',
                 vibrate: true,
                 title: 'Thông Báo Điểm Danh',
                 text: `Học viên ${message.name} đã có mặt tại lớp ${message.roomId} vào lúc ${this.getCurrentTime()}`,
