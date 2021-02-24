@@ -18,8 +18,10 @@ export const CHOSEN_CLASSROOM_KEY = 'chosen-class-room';
     providedIn: 'root'
 })
 export class ClassRoomService {
-    getClassRoomURL =  environment.rootURL + 'room/list/1?textSearch';
+    getClassRoomURL = environment.rootURL + 'room/list/1?textSearch';
     chosenClassRoom: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    isAdmin = false;
+    loginUserID = null;
 
     constructor(
         private http: HttpClient,
@@ -34,7 +36,9 @@ export class ClassRoomService {
     }
 
     chooseClass(className: string): Observable<any> {
-        this.chosenClassRoom.next(className);
+        this.checkUserRole(className).then(() => {
+            this.chosenClassRoom.next(className);
+        })
         return from(Storage.set({key: CHOSEN_CLASSROOM_KEY, value: className}));
     }
 
@@ -42,9 +46,34 @@ export class ClassRoomService {
         const chosenClass = await Storage.get({key: CHOSEN_CLASSROOM_KEY});
         if (chosenClass && chosenClass.value) {
             console.log('LOADED Chosen class: ', chosenClass.value);
-            this.chosenClassRoom.next(chosenClass.value);
+            this.checkUserRole(chosenClass.value).then(() => {
+                this.chosenClassRoom.next(chosenClass.value);
+            })
         } else {
             this.chosenClassRoom.next('');
         }
+    }
+
+    async checkUserRole(chosenClassRoom) {
+        const token = await Storage.get({key: LOGIN_TOKEN_KEY}); // thuoc tinh loginToken duoc dung de luu username dang nhap
+        if (token && token.value) {
+            const loginUserName = token.value;
+            // Account admin co dang admin, ten lop, ten phong vd: P101 P102 P103
+            if (loginUserName === 'admin' || loginUserName === 'vdsmart'
+                || loginUserName.toUpperCase() === chosenClassRoom
+                || this.isClassAccount(loginUserName)) {
+                this.isAdmin = true;
+                return of(null);
+            } else { // Account nguoi dung co dang 20211002_hoa 20211000_hung
+                this.loginUserID = loginUserName.split('_')[0];
+                this.isAdmin = false;
+                return of(this.loginUserID);
+            }
+        }
+    }
+
+    isClassAccount(username) { // Account nhan notification tu ca lop
+        const classRegex = new RegExp('^P[0-9][0-9][0-9]$'); // account lop co dang P101 P102 PXXX
+        return classRegex.test(username);
     }
 }

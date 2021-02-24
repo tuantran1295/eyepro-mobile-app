@@ -20,3 +20,21 @@
   padding-inline-start: 0 !important;
   padding-inline-end: 0 !important;
 }
+
+.emoji-img {
+  max-height: 80%;
+  max-width: 80%;
+}
+
+.emotion-thumbnail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.emotion-container {
+  margin-right: 14px;
+}

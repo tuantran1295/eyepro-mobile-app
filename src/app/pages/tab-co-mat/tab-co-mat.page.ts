@@ -15,6 +15,9 @@ export class TabCoMatPage implements OnInit {
     currentDate = new Date();
     loading = null;
 
+    isAdmin = false;
+    loginUserID = "";
+
     constructor(
         private attendanceService: AttendanceService,
         private classRoomService: ClassRoomService,
@@ -28,7 +31,10 @@ export class TabCoMatPage implements OnInit {
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             console.log("CO MAT CLASS NAME: ");
             console.log(className);
+            console.log("LOGIN USER ID: " + this.classRoomService.loginUserID);
             if (className) {
+                this.isAdmin = this.classRoomService.isAdmin;
+                this.loginUserID = this.classRoomService.loginUserID;
                 console.log("CO MAT CLASS ROOM: ");
                 console.log(className);
                 this.getCurrentClassName(className);

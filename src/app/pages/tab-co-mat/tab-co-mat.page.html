@@ -7,20 +7,47 @@
 <ion-content [fullscreen]="false">
     <ion-list>
         <ion-list-header class="list-header" lines="full">
-            <ion-label color="primary" class="font-size-16 ion-text-wrap ion-text-center">Danh Sách Học Viên Lớp <span class="bold-text">{{className}}</span> có mặt ngày <span
-                    class="bold-text">{{currentDate | date:'dd/MM/yyyy'}}</span></ion-label>
-        </ion-list-header>
-
-        <ion-item *ngFor="let student of studentList">
-            <ion-thumbnail slot="start">
-                <img [src]="student.realtimeImage">
-            </ion-thumbnail>
-            <ion-label>
-                <h2>{{student.fullName}}</h2>
-                <h3>Lớp: {{student.roomName}}</h3>
-                <h3>Thời gian điểm danh: {{student.timeInout}}</h3>
+            <ion-label *ngIf="isAdmin" color="primary" class="font-size-16 ion-text-wrap ion-text-center">Danh Sách Học Viên Lớp <span
+                    class="bold-text">{{className}}</span> có mặt ngày <span
+                    class="bold-text">{{currentDate | date:'dd/MM/yyyy'}}</span>
             </ion-label>
-        </ion-item>
+        </ion-list-header>
+        <div *ngIf="isAdmin">
+            <ion-item *ngFor="let student of studentList">
+                <ion-thumbnail slot="start">
+                    <img [src]="student.realtimeImage">
+                </ion-thumbnail>
+                <ion-label>
+                    <h2>{{student.fullName}}</h2>
+                    <h3>Lớp: {{student.roomName}}</h3>
+                    <h3>Thời gian điểm danh: {{student.timeInout}}</h3>
+                    <h3>Cảm xúc: {{student.emotion}}</h3>
+                </ion-label>
+                <!--            <div class="emotion-container">-->
+                <!--                <ion-thumbnail class="emotion-thumbnail" slot="end">-->
+                <!--&lt;!&ndash;                    <img [src]="student.realtimeImage">&ndash;&gt;-->
+                <!--                    <ion-label>-->
+                <!--                        <h3>{{student.emotion}}</h3>-->
+                <!--                    </ion-label>-->
+                <!--                </ion-thumbnail>-->
+                <!--            </div>-->
+            </ion-item>
+        </div>
+        <div *ngIf="!isAdmin">
+            <div *ngFor="let student of studentList">
+                <ion-item *ngIf="student.studentId === loginUserID" >
+                    <ion-thumbnail slot="start">
+                        <img [src]="student.realtimeImage">
+                    </ion-thumbnail>
+                    <ion-label>
+                        <h2>{{student.fullName}}</h2>
+                        <h3>Lớp: {{student.roomName}}</h3>
+                        <h3>Thời gian điểm danh: {{student.timeInout}}</h3>
+                        <h3>Cảm xúc: {{student.emotion}}</h3>
+                    </ion-label>
+                </ion-item>
+            </div>
+        </div>
 
     </ion-list>
 </ion-content>

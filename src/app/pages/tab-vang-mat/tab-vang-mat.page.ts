@@ -13,6 +13,9 @@ export class TabVangMatPage {
     className = '';
     currentDate = new Date();
 
+    isAdmin = false;
+    loginUserID = "";
+
     constructor(
         private attendanceService: AttendanceService,
         private classRoomService: ClassRoomService,
@@ -26,6 +29,8 @@ export class TabVangMatPage {
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             // loading.dismiss();
             if (className) {
+                this.isAdmin = this.classRoomService.isAdmin;
+                this.loginUserID = this.classRoomService.loginUserID;
                 this.getCurrentClassName(className);
                 this.getAbsenceStudent();
             }

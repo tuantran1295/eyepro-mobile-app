@@ -53,14 +53,9 @@ export class TabsPage implements OnInit, OnDestroy {
         console.log('TAB PAGE INIT!!!!');
         this.classRoomService.loadChosenClassRoom().then(() => {
             this.classRoomService.chosenClassRoom.subscribe(async (className) => {
-                console.log('TAB PAGE CLASS NAME: ');
-                console.log(className);
+
                 if (className) {
                     this.topicURL = this.BASE_TOPIC_URL + className;
-
-                    console.log('TAB PAGE CHOSEN CLASS ROOM: ');
-                    console.log(className);
-                    console.log(this.topicURL);
 
                     this.attendanceService.attended.subscribe(students => {
                         this.attendedList = students;
@@ -70,11 +65,18 @@ export class TabsPage implements OnInit, OnDestroy {
                         this.absenceList = students;
                     });
 
+                    this.isAdmin = this.classRoomService.isAdmin;
+                    this.loginUserID = this.classRoomService.loginUserID;
+                    console.log("IS ADMIN: " + this.isAdmin);
+                    console.log("login User ID: " + this.loginUserID);
+
                     const isDataExist = await this.attendanceService.getClassAttendance(className);
                     console.log('IS DATA EXIST: ');
                     console.log(isDataExist);
+
+
                     if (isDataExist) {
-                        this.checkUserRole(className);
+                        // this.checkUserRole(className);
                         this.connectToNotificationSocket();
                         this.setUpdateTimer(); // update student attendance status every 5 minutes
                     } else {
@@ -155,30 +157,30 @@ export class TabsPage implements OnInit, OnDestroy {
         }, 5000);
     }
 
-    async checkUserRole(chosenClassRoom) {
-        const token = await Storage.get({key: LOGIN_TOKEN_KEY}); // thuoc tinh loginToken duoc dung de luu username dang nhap
-        if (token && token.value) {
-            console.log('CHECK USER ROLE LOGIN TOKEN::::: ');
-            console.log(token.value);
-            this.loginUserName = token.value;
-            console.log(this.loginUserName.toUpperCase() === chosenClassRoom);
-            // Account admin co dang admin, ten lop, ten phong vd: P101 P102 P103
-            if (this.loginUserName === 'admin' || this.loginUserName === 'vdsmart'
-                || this.loginUserName.toUpperCase() === chosenClassRoom
-                || this.isClassAccount(this.loginUserName)) {
-                this.isAdmin = true;
-            } else { // Account nguoi dung co dang 20211002_hoa 20211000_hung
-                console.log("checkUserRole login ID:" + this.loginUserName.split('_')[0]);
-                this.loginUserID = this.loginUserName.split('_')[0];
-            }
-        }
+    // async checkUserRole(chosenClassRoom) {
+    //     const token = await Storage.get({key: LOGIN_TOKEN_KEY}); // thuoc tinh loginToken duoc dung de luu username dang nhap
+    //     if (token && token.value) {
+    //         console.log('CHECK USER ROLE LOGIN TOKEN::::: ');
+    //         console.log(token.value);
+    //         this.loginUserName = token.value;
+    //         console.log(this.loginUserName.toUpperCase() === chosenClassRoom);
+    //         // Account admin co dang admin, ten lop, ten phong vd: P101 P102 P103
+    //         if (this.loginUserName === 'admin' || this.loginUserName === 'vdsmart'
+    //             || this.loginUserName.toUpperCase() === chosenClassRoom
+    //             || this.isClassAccount(this.loginUserName)) {
+    //             this.isAdmin = true;
+    //         } else { // Account nguoi dung co dang 20211002_hoa 20211000_hung
+    //             console.log("checkUserRole login ID:" + this.loginUserName.split('_')[0]);
+    //             this.loginUserID = this.loginUserName.split('_')[0];
+    //         }
+    //     }
+    //
+    // }
 
-    }
-
-    isClassAccount(username) { // Account nhan notification tu ca lop
-        const classRegex = new RegExp('^P[0-9][0-9][0-9]$'); // account lop co dang P101 P102 PXXX
-        return classRegex.test(username);
-    }
+    // isClassAccount(username) { // Account nhan notification tu ca lop
+    //     const classRegex = new RegExp('^P[0-9][0-9][0-9]$'); // account lop co dang P101 P102 PXXX
+    //     return classRegex.test(username);
+    // }
 
     onNotiMessageReceived(message) {
         this.loadingService.dismissLoading();
@@ -225,6 +227,7 @@ export class TabsPage implements OnInit, OnDestroy {
                 // update check-in time
                 attendedOne.realtimeImage = notiMessage.image_path_temp;
                 attendedOne.timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
+                attendedOne.emotion = this.getEmotionFromNotification(notiMessage);
 
                 this.attendedList.push(attendedOne);
                 // lay thoi gian hien tai tru di timeInout neu ket qua lon hon 5 phut, chuyen ve vang mat.
@@ -244,11 +247,42 @@ export class TabsPage implements OnInit, OnDestroy {
                 if (this.attendedList[j].studentId === notiMessage.studentId) {
                     this.attendedList[j].realtimeImage = notiMessage.image_path_temp;
                     this.attendedList[j].timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
+                    this.attendedList[j].emotion = this.getEmotionFromNotification(notiMessage);
                     // @ts-ignore
                     this.attendanceService.attended.next(this.attendedList);
                 }
             }
         }
+    }
+
+    getEmotionFromNotification(notiMessage) {
+        const emotionArray = []; // happy, neutral, sad. surprise
+        emotionArray.push(notiMessage.happy);
+        emotionArray.push(notiMessage.neutral);
+        emotionArray.push(notiMessage.sad);
+        emotionArray.push(notiMessage.surprise);
+
+        const maxIndex = emotionArray.indexOf(Math.max(...emotionArray));
+        let emotionText = "";
+
+        switch (maxIndex) {
+            case 0: // happy
+                emotionText = "Vui vẻ";
+                break;
+            case 1:
+                emotionText = "Bình thường";
+                break;
+            case 2:
+                emotionText = "Buồn";
+                break;
+            case 3:
+                emotionText = "Ngạc nhiên";
+                break;
+        }
+
+        console.log("NOTI UPDATE EMOTION: " + emotionText);
+
+        return emotionText;
     }
 
 
