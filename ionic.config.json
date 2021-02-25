@@ -9,5 +9,6 @@
       "path": "/api",
       "proxyUrl": "http://cors.api.com/api"
     }
-    ]
+  ],
+  "id": "4c6f4a10"
 }
