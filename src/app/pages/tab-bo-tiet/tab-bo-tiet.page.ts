@@ -15,6 +15,9 @@ export class TabBoTietPage implements OnInit {
     currentDate = new Date();
     loading = null;
 
+    isAdmin = false;
+    loginUserID = "";
+
     constructor(
         private classRoomService: ClassRoomService,
         private attendanceService: AttendanceService,
@@ -27,6 +30,8 @@ export class TabBoTietPage implements OnInit {
         // this.loadingService.presentLoading();
         this.classRoomService.chosenClassRoom.subscribe((className) => {
             if (className) {
+                this.isAdmin = this.classRoomService.isAdmin;
+                this.loginUserID = this.classRoomService.loginUserID;
                 this.getCurrentClassName(className);
                 this.getLeftStudent();
             }

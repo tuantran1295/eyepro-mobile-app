@@ -12,16 +12,33 @@
                     class="bold-text">{{currentDate | date:'dd/MM/yyyy'}}</span></ion-label>
         </ion-list-header>
 
-        <ion-item *ngFor="let student of studentList">
-            <ion-thumbnail slot="start">
-                <img [src]="student.profileImage">
-            </ion-thumbnail>
-            <ion-label>
-                <h2>{{student.fullName}}</h2>
-                <h3>Lớp: {{student.roomName}}</h3>
-                <p>{{student.areaName}}</p>
-            </ion-label>
-        </ion-item>
+        <div *ngIf="isAdmin">
+            <ion-item *ngFor="let student of studentList">
+                <ion-thumbnail slot="start">
+                    <img [src]="student.profileImage">
+                </ion-thumbnail>
+                <ion-label>
+                    <h2>{{student.fullName}}</h2>
+                    <h3>Lớp: {{student.roomName}}</h3>
+                    <p>{{student.areaName}}</p>
+                </ion-label>
+            </ion-item>
+        </div>
+
+        <div *ngIf="!isAdmin">
+            <div *ngFor="let student of studentList">
+                <ion-item *ngIf="student.studentId === loginUserID">
+                    <ion-thumbnail slot="start">
+                        <img [src]="student.profileImage">
+                    </ion-thumbnail>
+                    <ion-label>
+                        <h2>{{student.fullName}}</h2>
+                        <h3>Lớp: {{student.roomName}}</h3>
+                        <p>{{student.areaName}}</p>
+                    </ion-label>
+                </ion-item>
+            </div>
+        </div>
 
     </ion-list>
 </ion-content>

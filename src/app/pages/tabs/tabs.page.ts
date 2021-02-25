@@ -28,6 +28,7 @@ export class TabsPage implements OnInit, OnDestroy {
 
     attendedList = [];
     absenceList = [];
+    leftList = [];
 
     updateTimer;
     isAdmin = false;
@@ -49,6 +50,7 @@ export class TabsPage implements OnInit, OnDestroy {
 
     async ngOnInit() {
         this.topicURL = '/topic/newMonitor/';
+        await this.localNotification.requestPermission();
 
         console.log('TAB PAGE INIT!!!!');
         this.classRoomService.loadChosenClassRoom().then(() => {
@@ -65,10 +67,14 @@ export class TabsPage implements OnInit, OnDestroy {
                         this.absenceList = students;
                     });
 
+                    this.attendanceService.left.subscribe(students => {
+                        this.leftList = students;
+                    });
+
                     this.isAdmin = this.classRoomService.isAdmin;
                     this.loginUserID = this.classRoomService.loginUserID;
-                    console.log("IS ADMIN: " + this.isAdmin);
-                    console.log("login User ID: " + this.loginUserID);
+                    console.log('IS ADMIN: ' + this.isAdmin);
+                    console.log('login User ID: ' + this.loginUserID);
 
                     const isDataExist = await this.attendanceService.getClassAttendance(className);
                     console.log('IS DATA EXIST: ');
@@ -112,13 +118,13 @@ export class TabsPage implements OnInit, OnDestroy {
             const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
 
             if (diffMins >= 5) { //5
-                const absencedOne = this.attendedList.splice(i, 1);
-                this.absenceList.push(absencedOne[0]);
-                console.log(this.absenceList);
+                const leftOne = this.attendedList.splice(i, 1);
+                this.leftList.push(leftOne[0]);
+                console.log(this.leftList);
                 // @ts-ignore
                 this.attendanceService.attended.next(this.attendedList);
                 // @ts-ignore
-                this.attendanceService.absence.next(this.absenceList);
+                this.attendanceService.left.next(this.leftList);
             }
         }
     }
@@ -240,6 +246,31 @@ export class TabsPage implements OnInit, OnDestroy {
             }
         }
 
+        if (isUpdatingOnly) { // hoc sinh vua diem danh khomg co trong danh vang mat absenceList
+            let j = 0;
+            while (j < this.leftList.length) {
+                let currentStudent = this.leftList[j];
+                if (currentStudent.studentId === notiMessage.studentId) {
+                    console.log("LEFT STUDENT MATCHED: " + currentStudent.studentId);
+                    isUpdatingOnly = false; // student hien tai co trong danh sach absence
+                    attendedOne = this.leftList.splice(j, 1)[0];
+                    // update check-in time
+                    attendedOne.realtimeImage = notiMessage.image_path_temp;
+                    attendedOne.timeInout = this.timestampToHourMinuteSecond(notiMessage.inOutTime);
+                    attendedOne.emotion = this.getEmotionFromNotification(notiMessage);
+
+                    this.attendedList.push(attendedOne);
+                    // lay thoi gian hien tai tru di timeInout neu ket qua lon hon 5 phut, chuyen ve vang mat.
+                    // @ts-ignore
+                    this.attendanceService.left.next(this.leftList);
+                    // @ts-ignore
+                    this.attendanceService.attended.next(this.attendedList);
+                } else {
+                    j++;
+                }
+            }
+        }
+
         // neu attendedList co student dang diem danh roi thi cap nhat thong tin image va timeInout
         // neu chua co, push them attendedOne
         if (isUpdatingOnly) {
@@ -262,25 +293,32 @@ export class TabsPage implements OnInit, OnDestroy {
         emotionArray.push(notiMessage.sad);
         emotionArray.push(notiMessage.surprise);
 
+        console.log('EMOTION ARRAY: ');
+        console.log(emotionArray);
         const maxIndex = emotionArray.indexOf(Math.max(...emotionArray));
-        let emotionText = "";
+        console.log('EMOTION INDEX:' + maxIndex);
+
+        let emotionText = '';
 
         switch (maxIndex) {
             case 0: // happy
-                emotionText = "Vui vẻ";
+                emotionText = 'Vui vẻ';
                 break;
             case 1:
-                emotionText = "Bình thường";
+                emotionText = 'Bình thường';
                 break;
             case 2:
-                emotionText = "Buồn";
+                emotionText = 'Buồn';
                 break;
             case 3:
-                emotionText = "Ngạc nhiên";
+                emotionText = 'Ngạc nhiên';
+                break;
+            default:
+                emotionText = 'Bình thưởng';
                 break;
         }
 
-        console.log("NOTI UPDATE EMOTION: " + emotionText);
+        console.log('NOTI UPDATE EMOTION: ' + emotionText);
 
         return emotionText;
     }
@@ -340,7 +378,11 @@ export class TabsPage implements OnInit, OnDestroy {
             this.localNotification.schedule({
                 id: 1,
                 // sound: this.setSound(),
-                sound: this.platform.is('android') ? 'file://resources/android/sound/quite-impressed-565.mp3' : 'resources/ios/sound/slow-spring-board-570.m4r',
+                // channel: 'eyepro-channel',
+                priority: 2,
+                silent: false,
+                // foreground: true,
+                sound: this.platform.is('android') ? 'file://resources/android/sound/goes-without-saying-608.mp3' : 'content://resources/ios/sound/goes-without-saying-608.m4r',
                 vibrate: true,
                 title: 'Thông Báo Điểm Danh',
                 text: `Học viên ${message.name} đã có mặt tại lớp ${message.roomId} vào lúc ${this.getCurrentTime()}`,
