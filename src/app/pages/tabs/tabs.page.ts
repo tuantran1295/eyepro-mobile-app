@@ -50,8 +50,6 @@ export class TabsPage implements OnInit, OnDestroy {
 
     async ngOnInit() {
         this.topicURL = '/topic/newMonitor/';
-        await this.localNotification.requestPermission();
-
         console.log('TAB PAGE INIT!!!!');
         this.classRoomService.loadChosenClassRoom().then(() => {
             this.classRoomService.chosenClassRoom.subscribe(async (className) => {

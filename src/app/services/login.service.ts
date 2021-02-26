@@ -34,7 +34,10 @@ export class LoginService {
     }
 
     //: Observable<any>
-    login(credentials: { username, password }): Observable<any> {
+    login(credentials: { userName, password }): Observable<any> {
+        console.log("LOGIN SERVICE CREDENTIAL: ")
+        console.log(credentials.userName);
+        console.log(credentials.password);
         this.loginURL = environment.rootURL + 'auth/signin';
         return this.http.post(this.loginURL, credentials).pipe(
             map((data: any) => data.data.userName),
