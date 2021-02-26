@@ -22,6 +22,7 @@ export class ClassRoomService {
     chosenClassRoom: BehaviorSubject<string> = new BehaviorSubject<string>(null);
     isAdmin = false;
     loginUserID = null;
+    loginUserName = null;
 
     constructor(
         private http: HttpClient,
@@ -57,15 +58,15 @@ export class ClassRoomService {
     async checkUserRole(chosenClassRoom) {
         const token = await Storage.get({key: LOGIN_TOKEN_KEY}); // thuoc tinh loginToken duoc dung de luu username dang nhap
         if (token && token.value) {
-            const loginUserName = token.value;
+             this.loginUserName = token.value;
             // Account admin co dang admin, ten lop, ten phong vd: P101 P102 P103
-            if (loginUserName === 'admin' || loginUserName === 'vdsmart'
-                || loginUserName.toUpperCase() === chosenClassRoom
-                || this.isClassAccount(loginUserName)) {
+            if (this.loginUserName === 'admin' || this.loginUserName === 'vdsmart'
+                || this.loginUserName.toUpperCase() === chosenClassRoom
+                || this.isClassAccount(this.loginUserName)) {
                 this.isAdmin = true;
                 return of(null);
             } else { // Account nguoi dung co dang 20211002_hoa 20211000_hung
-                this.loginUserID = loginUserName.split('_')[0];
+                this.loginUserID = this.loginUserName.split('_')[0];
                 this.isAdmin = false;
                 return of(this.loginUserID);
             }

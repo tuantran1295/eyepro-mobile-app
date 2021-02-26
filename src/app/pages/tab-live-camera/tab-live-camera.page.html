@@ -16,10 +16,10 @@
         </ion-card-content>
     </ion-card>
     <ion-card>
-        <ion-card-header id="class-info-header">
+        <ion-card-header class="class-info-header">
             <ion-card-title class="card-header">THÔNG TIN LỚP HỌC</ion-card-title>
         </ion-card-header>
-        <ion-card-content id="class-info-list">
+        <ion-card-content class="class-info-list">
             <ion-item>
                 <ion-label>
                     Lớp:
@@ -86,6 +86,42 @@
         <!--            <ion-icon name="accessibility-outline" slot="start"></ion-icon>-->
         <!--            <ion-label>Người lạ: <span class="bold-text">1 người</span></ion-label>-->
         <!--        </ion-item>-->
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header class="class-info-header">
+            <ion-card-title class="card-header">THÔNG TIN BỔ XUNG</ion-card-title>
+        </ion-card-header>
+        <ion-card-content class="class-info-list">
+            <ion-item>
+                <ion-label>
+                    Tên người dùng:
+                </ion-label>
+                <ion-label class="ion-text-end bold-text">
+                    {{this.loginUserName}}
+                </ion-label>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    Loại tài khoản:
+                </ion-label>
+                <ion-label class="ion-text-end bold-text">
+                    {{this.accountType}}
+                </ion-label>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    Phiên bản:
+                </ion-label>
+                <ion-label class="ion-text-end bold-text">
+                    {{this.appVersion}}
+                </ion-label>
+            </ion-item>
+
+        </ion-card-content>
+
     </ion-card>
 
     <ion-card>

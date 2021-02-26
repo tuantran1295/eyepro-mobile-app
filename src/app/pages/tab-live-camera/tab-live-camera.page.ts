@@ -22,6 +22,9 @@ export class TabLiveCameraPage implements OnInit {
     currentDate = new Date();
     loading = null;
 
+    loginUserName = '';
+    accountType = 'Thường';
+    appVersion = 'v2.11'
 
     constructor(
         private classRoomService: ClassRoomService,
@@ -40,6 +43,7 @@ export class TabLiveCameraPage implements OnInit {
             if (className) {
                 // console.log('Chosen CLASS NAME: ');
                 // console.log(className);
+                this.getUserInfo();
                 this.getSchoolName();
                 this.getCurrentClassName(className);
                 this.getTotalStudent();
@@ -110,6 +114,11 @@ export class TabLiveCameraPage implements OnInit {
                 this.leftNumber = students.length;
             }
         });
+    }
+
+    getUserInfo() {
+        this.loginUserName = this.classRoomService.loginUserName;
+        this.accountType = this.classRoomService.isAdmin ? 'Admin' : 'Thường';
     }
 
     async logout() {
