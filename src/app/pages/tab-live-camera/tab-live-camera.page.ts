@@ -2,9 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {AttendanceService} from '../../services/attendance.service';
 import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
-import {LoadingController} from '@ionic/angular';
+import {LoadingController, ModalController} from '@ionic/angular';
 import {ClassRoomService} from '../../services/class-room.service';
 import {LoadingService} from '../../services/loading.service';
+import {UserProfilePage} from '../user-profile/user-profile.page';
+
 
 @Component({
     selector: 'app-tab-live-camera',
@@ -22,9 +24,15 @@ export class TabLiveCameraPage implements OnInit {
     currentDate = new Date();
     loading = null;
 
+    DEFAULT_PROFILE_PICTURE = "/assets/image/dummy-avatar.png";
+
+    loginUserID = null;
     loginUserName = '';
+    profilePicture = null;
     accountType = 'Thường';
-    appVersion = 'v2.11'
+    appVersion = 'v2.11';
+
+    userProfileModal = null;
 
     constructor(
         private classRoomService: ClassRoomService,
@@ -32,6 +40,7 @@ export class TabLiveCameraPage implements OnInit {
         private loginService: LoginService,
         private router: Router,
         private loadingService: LoadingService,
+        private modalController: ModalController,
     ) {
     }
 
@@ -117,8 +126,44 @@ export class TabLiveCameraPage implements OnInit {
     }
 
     getUserInfo() {
+        this.getLoginProfilePicture()
+        // this.profilePicture = this.classRoomService.isAdmin ?
         this.loginUserName = this.classRoomService.loginUserName;
         this.accountType = this.classRoomService.isAdmin ? 'Admin' : 'Thường';
+    }
+
+    getLoginProfilePicture() {
+        if (!this.classRoomService.isAdmin) {
+            this.attendanceService.wholeClass.subscribe(studentArr => {
+
+                if (studentArr && studentArr.length > 0) {
+                    for (let i = 0; i < studentArr.length; i++) {
+                        if (studentArr[i]['studentId'] === this.classRoomService.loginUserID) {
+                            this.profilePicture = studentArr[i]['profileImage'];
+                            return;
+                        }
+                    }
+                }
+
+            })
+        } else {
+            this.profilePicture = this.DEFAULT_PROFILE_PICTURE;
+            return;
+        }
+
+    }
+
+    async presentProfileModal() {
+        this.userProfileModal = await this.modalController.create({
+            component: UserProfilePage,
+            componentProps: {
+                userName: this.loginUserName,
+                accountType: this.accountType,
+                profilePic: this.profilePicture,
+            }
+        });
+
+        return await this.userProfileModal.present();
     }
 
     async logout() {

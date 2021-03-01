@@ -15,6 +15,7 @@ import {environment} from '../../environments/environment';
 export class AttendanceService implements OnInit {
     attendanceURL = environment.rootURL + 'student/timekeeping-room/roomId/';
 
+    wholeClass: BehaviorSubject<[]> = new BehaviorSubject<[]>(null);
     attended: BehaviorSubject<[]> = new BehaviorSubject<[]>(null);
     absence: BehaviorSubject<[]> = new BehaviorSubject<[]>(null);
     left: BehaviorSubject<[]> = new BehaviorSubject<[]>(null);
@@ -43,6 +44,7 @@ export class AttendanceService implements OnInit {
             console.log(studentList !== null)
 
             if (studentList !== null) {
+                this.wholeClass.next(studentList);
                 const attendedStudent = studentList.filter(student => student['monitorState'] === 1);
                 console.log("AttendanceService getClassAttendance:")
                 console.log(attendedStudent);
