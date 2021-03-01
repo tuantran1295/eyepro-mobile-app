@@ -22,10 +22,10 @@ export class LoginPage implements OnInit {
     credentials: FormGroup;
 
     serverList = [
+        'http://27.71.228.53:9003/',
         'http://27.71.228.53:9002/SmartClass/',
         'http://10.0.0.183:9003/',
         'http://192.168.196.183:9003/',
-        'http://27.71.228.53:9003/',
         'http://10.0.0.180:9003/',
         'http://192.168.196.180:9003/'
     ];
@@ -43,15 +43,17 @@ export class LoginPage implements OnInit {
 
     ngOnInit() {
         this.setEnvironmentServer();
-        this.loadSavedUserLoginCredential() // remember username and password
+        this.loadUserLoginCredential() // remember username and password
         this.autoLogin();
         this.credentials = this.formBuilder.group({
             // userName: ['view_301', [Validators.required, Validators.minLength(3)]],
             // password: ['abcd1234', [Validators.required, Validators.minLength(5)]]
             // userName: ['admin6', [Validators.required, Validators.minLength(3)]],
             // password: ['123456aA@', [Validators.required, Validators.minLength(5)]]
-            userName: ["vdsmart", [Validators.required, Validators.minLength(3)]],
-            password: ["Vdsmart321", [Validators.required, Validators.minLength(5)]]
+            // userName: ["vdsmart", [Validators.required, Validators.minLength(3)]],
+            // password: ["Vdsmart321", [Validators.required, Validators.minLength(5)]]
+            userName: ["P101", [Validators.required, Validators.minLength(3)]],
+            password: ["abcd1234", [Validators.required, Validators.minLength(5)]]
         });
     }
 
@@ -121,7 +123,7 @@ export class LoginPage implements OnInit {
         return from(Storage.set({key: LAST_USERNAME_KEY, value: lastLoginString}));
     }
 
-    async loadSavedUserLoginCredential() {
+    async loadUserLoginCredential() {
         const token = await Storage.get({key: LAST_USERNAME_KEY});
         if (token && token.value) {
             console.log(`LAST USER LOGIN: `);

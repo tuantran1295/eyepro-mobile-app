@@ -60,7 +60,7 @@ export class DanhSachLopPage implements OnInit {
         this.classRoomService.chooseClass(className).subscribe(() => {
             this.classRoomService.chosenClassRoom.subscribe(chosenClass => {
                 loading.dismiss();
-                this.router.navigateByUrl('/thong-tin-lop/' + chosenClass, {replaceUrl: true});
+                this.router.navigateByUrl('/thong-tin-lop/' + chosenClass);
             });
         });
     }
