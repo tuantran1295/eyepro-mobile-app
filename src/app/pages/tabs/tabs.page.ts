@@ -147,7 +147,7 @@ export class TabsPage implements OnInit, OnDestroy {
     }
 
     disconnectNotificationSocket() {
-        if (this.stompClient !== null) {
+        if (this.stompClient) {
             this.stompClient.disconnect();
         }
         console.log('Disconnected');
