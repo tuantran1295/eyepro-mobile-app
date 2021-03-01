@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
     serverList = [
         'http://10.0.0.183:9003/',
         'http://192.168.196.183:9003/',
-        'http://27.71.228.53:9002/SmartClass',
+        'http://27.71.228.53:9002/SmartClass/',
         'http://27.71.228.53:9003/',
         'http://10.0.0.180:9003/',
         'http://192.168.196.180:9003/'
